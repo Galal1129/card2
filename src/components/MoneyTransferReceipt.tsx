@@ -27,7 +27,7 @@ const MoneyTransferReceipt: React.FC = () => {
         height: 634,
         windowWidth: 900,
         windowHeight: 634,
-        foreignObjectRendering: true,
+        foreignObjectRendering: false,
         letterRendering: true,
         onclone: (clonedDoc) => {
           const clonedElement = clonedDoc.querySelector('.receipt-container');
@@ -102,6 +102,15 @@ const MoneyTransferReceipt: React.FC = () => {
             flexColumnElements.forEach((card: Element) => {
               const htmlCard = card as HTMLElement;
               htmlCard.style.flexDirection = 'column';
+            });
+
+            const textElements = clonedElement.querySelectorAll(
+              '.pill-label, .pill-value, .card-label, .card-value, .account-label, .account-value, .box-label, .customer-label-box, .customer-name-box'
+            );
+            textElements.forEach((el: Element) => {
+              const htmlEl = el as HTMLElement;
+              htmlEl.style.paddingTop = '2px';
+              htmlEl.style.lineHeight = '1.2';
             });
           }
         },
