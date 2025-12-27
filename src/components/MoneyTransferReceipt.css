@@ -471,3 +471,50 @@
   justify-content: center;
   line-height: 1;
 }
+/* تثبيت محاذاة النص داخل البوكسات (حل baseline وقت التصدير) */
+.pill-label,
+.pill-value,
+.account-label,
+.account-value,
+.card-label,
+.card-value,
+.box-label {
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* أهم بوكسين كانوا يظهروا قريبين من الأسفل */
+.action-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  padding: 0 50px;
+  line-height: 1;
+}
+
+/* تأكيد أن الـ pills نفس الفكرة */
+.date-pill,
+.document-pill {
+  display: flex;
+  align-items: center;
+  height: 38px;
+}
+
+/* تأكيد */
+.customer-name-box,
+.customer-label-box,
+.account-number-box,
+.account-label-box,
+.statement-box,
+.code-box,
+.notice-bar,
+.timestamp-pill,
+.notice-box,
+.amount-words-box,
+.qr-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
