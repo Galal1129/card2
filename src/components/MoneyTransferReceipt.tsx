@@ -11,16 +11,11 @@ const MoneyTransferReceipt: React.FC = () => {
 
     try {
       await document.fonts.ready;
+      await document.fonts.load('700 20px Cairo');
+      await document.fonts.load('800 20px Cairo');
+      await document.fonts.load('600 14px Cairo');
 
-      const fontCheck = setInterval(async () => {
-        const loaded = document.fonts.check('12px Cairo');
-        if (loaded) {
-          clearInterval(fontCheck);
-        }
-      }, 100);
-
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      clearInterval(fontCheck);
+      await new Promise(resolve => setTimeout(resolve, 2000));
 
       const canvas = await html2canvas(receiptRef.current, {
         scale: 3,
@@ -33,6 +28,7 @@ const MoneyTransferReceipt: React.FC = () => {
         windowWidth: 900,
         windowHeight: 634,
         foreignObjectRendering: false,
+        letterRendering: true,
         onclone: (clonedDoc) => {
           const clonedElement = clonedDoc.querySelector('.receipt-container');
           if (clonedElement) {
@@ -40,11 +36,14 @@ const MoneyTransferReceipt: React.FC = () => {
             allElements.forEach((el: Element) => {
               const htmlEl = el as HTMLElement;
               const computedStyle = window.getComputedStyle(el);
+
               htmlEl.style.fontFamily = "'Cairo', sans-serif";
               htmlEl.style.textDecoration = 'none';
               htmlEl.style.webkitFontSmoothing = 'antialiased';
               htmlEl.style.fontSmooth = 'always';
               htmlEl.style.textRendering = 'optimizeLegibility';
+              htmlEl.style.letterSpacing = '0';
+              htmlEl.style.fontFeatureSettings = '"liga" 1, "calt" 1';
 
               if (computedStyle.fontWeight) {
                 htmlEl.style.fontWeight = computedStyle.fontWeight;
@@ -52,14 +51,32 @@ const MoneyTransferReceipt: React.FC = () => {
               if (computedStyle.fontSize) {
                 htmlEl.style.fontSize = computedStyle.fontSize;
               }
+              if (computedStyle.lineHeight) {
+                htmlEl.style.lineHeight = computedStyle.lineHeight;
+              }
             });
 
-            const arabicElements = clonedElement.querySelectorAll('.contact-box-title');
-            arabicElements.forEach((el: Element) => {
+            const arabicTextElements = clonedElement.querySelectorAll(
+              '.company-name-ar-line, .contact-box-title, .action-title, .pill-label, .account-label, .card-label, .box-label, .customer-name-box, .notice-box, .card-value, .amount-words-box, .detail-label, .detail-value, .notice-bar'
+            );
+            arabicTextElements.forEach((el: Element) => {
               const htmlEl = el as HTMLElement;
               htmlEl.style.fontFamily = "'Cairo', sans-serif";
-              htmlEl.style.unicodeBidi = 'embed';
               htmlEl.style.direction = 'rtl';
+              htmlEl.style.unicodeBidi = 'bidi-override';
+              htmlEl.style.textAlign = 'center';
+              htmlEl.style.letterSpacing = '0';
+              htmlEl.style.whiteSpace = 'normal';
+              htmlEl.style.fontKerning = 'normal';
+              htmlEl.style.fontFeatureSettings = '"liga" 1, "calt" 1, "curs" 1';
+            });
+
+            const headerArabicElements = clonedElement.querySelectorAll('.company-name-ar-line, .contact-box-title');
+            headerArabicElements.forEach((el: Element) => {
+              const htmlEl = el as HTMLElement;
+              htmlEl.style.whiteSpace = 'nowrap';
+              htmlEl.style.display = 'block';
+              htmlEl.style.width = '100%';
             });
 
             const labels = clonedElement.querySelectorAll('.pill-label, .account-label, .card-label, .box-label');
@@ -67,6 +84,15 @@ const MoneyTransferReceipt: React.FC = () => {
               const htmlLabel = label as HTMLElement;
               htmlLabel.style.textDecoration = 'none';
               htmlLabel.style.borderBottom = 'none';
+            });
+
+            const cardElements = clonedElement.querySelectorAll('.info-card');
+            cardElements.forEach((card: Element) => {
+              const htmlCard = card as HTMLElement;
+              htmlCard.style.display = 'flex';
+              htmlCard.style.flexDirection = 'column';
+              htmlCard.style.alignItems = 'center';
+              htmlCard.style.justifyContent = 'center';
             });
           }
         },
