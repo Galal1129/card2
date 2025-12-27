@@ -1,11 +1,46 @@
-import React from 'react';
-import { DollarSign } from 'lucide-react';
+import React, { useRef } from 'react';
+import { Download } from 'lucide-react';
+import html2canvas from 'html2canvas';
 import './MoneyTransferReceipt.css';
 
 const MoneyTransferReceipt: React.FC = () => {
+  const receiptRef = useRef<HTMLDivElement>(null);
+
+  const handleExportAsImage = async () => {
+    if (!receiptRef.current) return;
+
+    try {
+      const canvas = await html2canvas(receiptRef.current, {
+        scale: 2,
+        backgroundColor: '#ffffff',
+        logging: false,
+        width: 900,
+        height: 634,
+        windowWidth: 900,
+        windowHeight: 634,
+      });
+
+      const image = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.href = image;
+      link.download = 'receipt-31021.png';
+      link.click();
+    } catch (error) {
+      console.error('Error exporting receipt:', error);
+    }
+  };
+
   return (
     <div className="receipt-page">
-      <div className="receipt-container">
+      <button
+        onClick={handleExportAsImage}
+        className="export-button"
+        title="تصدير كصورة"
+      >
+        <Download size={20} />
+        <span>تصدير كصورة</span>
+      </button>
+      <div className="receipt-container" ref={receiptRef}>
         <div className="receipt-inner-frame">
 
           <div className="receipt-header">
