@@ -86,21 +86,35 @@ const MoneyTransferReceipt: React.FC = () => {
               htmlLabel.style.borderBottom = 'none';
             });
 
+            const allBoxes = clonedElement.querySelectorAll(
+              '.date-pill, .document-pill, .action-title, .account-number-box, .account-label-box, .customer-name-box, .customer-label-box, .notice-box, .info-card, .amount-words-box, .statement-box, .code-box, .qr-placeholder, .notice-bar, .timestamp-pill'
+            );
+            allBoxes.forEach((box: Element) => {
+              const htmlBox = box as HTMLElement;
+              htmlBox.style.display = 'flex';
+              htmlBox.style.alignItems = 'center';
+              htmlBox.style.justifyContent = 'center';
+              htmlBox.style.margin = '0';
+              htmlBox.style.padding = htmlBox.style.padding || '0';
+            });
+
             const cardElements = clonedElement.querySelectorAll('.info-card');
             cardElements.forEach((card: Element) => {
               const htmlCard = card as HTMLElement;
-              htmlCard.style.display = 'flex';
               htmlCard.style.flexDirection = 'column';
-              htmlCard.style.alignItems = 'center';
-              htmlCard.style.justifyContent = 'center';
+              htmlCard.style.gap = '4px';
             });
 
-            const textElements = clonedElement.querySelectorAll(
-              '.card-label, .card-value, .pill-label, .pill-value, .account-label, .account-value, .box-label, .customer-label-box, .customer-name-box'
+            const allTextElements = clonedElement.querySelectorAll(
+              '.pill-label, .pill-value, .account-label, .account-value, .card-label, .card-value, .box-label, .customer-name-box, .customer-label-box, .notice-box, .amount-words-box'
             );
-            textElements.forEach((el: Element) => {
+            allTextElements.forEach((el: Element) => {
               const htmlEl = el as HTMLElement;
-              htmlEl.style.transform = 'translateY(-5px)';
+              htmlEl.style.lineHeight = '1.1';
+              htmlEl.style.margin = '0';
+              htmlEl.style.padding = '0';
+              htmlEl.style.display = 'inline-flex';
+              htmlEl.style.alignItems = 'center';
             });
           }
         },
