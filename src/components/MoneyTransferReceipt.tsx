@@ -109,7 +109,7 @@ const MoneyTransferReceipt: React.FC = () => {
             );
             textElements.forEach((el: Element) => {
               const htmlEl = el as HTMLElement;
-              htmlEl.style.paddingTop = '2px';
+              htmlEl.style.paddingTop = '0';
               htmlEl.style.lineHeight = '1.2';
             });
           }
