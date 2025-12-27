@@ -19,8 +19,8 @@ const MoneyTransferReceipt: React.FC = () => {
 
             <div className="header-center">
               <div className="company-name-ar-line">الترف</div>
-              <div className="company-name-ar-line">للتحويلات</div>
-              <div className="company-name-ar-line">المالية</div>
+              <div className="company-name-ar-line"> للتحويلات المالية </div>
+              <div className="company-name-ar-line"></div>
               <div className="company-name-en">Al-Taraf</div>
             </div>
 
