@@ -99,6 +99,17 @@ if (actionTitle) actionTitle.style.transform = 'translateY(-1px)';
               htmlContainer.style.alignItems = 'center';
               htmlContainer.style.justifyContent = 'center';
             });
+const boxes = clonedElement.querySelectorAll(
+  '.date-pill, .document-pill, .account-number-box, .account-label-box, .customer-name-box, .customer-label-box, .info-card, .statement-box, .code-box, .notice-bar, .timestamp-pill'
+);
+
+boxes.forEach((box) => {
+  box.querySelectorAll('span, div').forEach((t) => {
+    const el = t as HTMLElement;
+    el.style.display = 'inline-block';
+    el.style.transform = 'translateY(-1px)';
+  });
+});
 
             const flexColumnElements = clonedElement.querySelectorAll('.info-card');
             flexColumnElements.forEach((card: Element) => {
