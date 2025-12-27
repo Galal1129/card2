@@ -622,7 +622,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 52px;        
+  height: 44px;        
   padding: 0 50px;      
 }
-htmlEl.style.transform = 'translateY(-1px)';
