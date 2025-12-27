@@ -9,75 +9,60 @@ const MoneyTransferReceipt: React.FC = () => {
   const handleExportAsImage = async () => {
     if (!receiptRef.current) return;
 
+    const node = receiptRef.current;
+
     try {
-      // تأكد من تحميل الخط قبل الالتقاط
+      // 1) فعّل وضع التصدير (يمنع wrapping ويقلل gaps) قبل التصوير
+      node.classList.add('exporting');
+
+      // 2) انتظر تحميل الخطوط + انتظار رسمين (layout) لضمان القياسات
       await document.fonts.ready;
-      await document.fonts.load('400 14px Cairo');
-      await document.fonts.load('600 14px Cairo');
       await document.fonts.load('700 20px Cairo');
       await document.fonts.load('800 20px Cairo');
+      await document.fonts.load('600 14px Cairo');
 
-      // قياسات العنصر الحقيقية (بدل الأرقام الثابتة)
-      const el = receiptRef.current;
-      const width = el.offsetWidth;
-      const height = el.offsetHeight;
+      await new Promise<void>((r) => requestAnimationFrame(() => requestAnimationFrame(() => r())));
 
-      const canvas = await html2canvas(el, {
+      // 3) التصوير
+      const canvas = await html2canvas(node, {
         scale: 3,
         backgroundColor: '#ffffff',
         logging: false,
         useCORS: true,
         allowTaint: true,
-        width,
-        height,
-        windowWidth: width,
-        windowHeight: height,
-        scrollX: 0,
-        scrollY: 0,
+        width: node.offsetWidth,
+        height: node.offsetHeight,
+        windowWidth: node.offsetWidth,
+        windowHeight: node.offsetHeight,
         foreignObjectRendering: false,
-        letterRendering: true,
-
+        letterRendering: false,
         onclone: (clonedDoc) => {
-          const cloned = clonedDoc.querySelector('.receipt-container') as HTMLElement | null;
-          if (!cloned) return;
+          const clonedContainer = clonedDoc.querySelector('.receipt-container') as HTMLElement | null;
+          if (!clonedContainer) return;
 
-          // فعّل وضع التصدير (CSS خاص بالتصدير)
-          cloned.classList.add('is-exporting');
+          // فعّل Export Mode داخل النسخة المستنسخة أيضًا
+          clonedContainer.classList.add('exporting');
 
-          // ثبّت نفس القياس بالضبط داخل النسخة المستنسخة
-          cloned.style.width = `${width}px`;
-          cloned.style.height = `${height}px`;
+          // تثبيت المقاس (يمنع أي اختلافات في الطباعة داخل clone)
+          clonedContainer.style.width = '900px';
+          clonedContainer.style.height = '634px';
 
-          // تجنّب أي تحولات غريبة أو سكرول
-          cloned.style.transform = 'none';
-          cloned.style.left = '0';
-          cloned.style.top = '0';
+          // منع أي التفاف في الهيدر داخل التصدير
+          clonedDoc
+            .querySelectorAll(
+              '.contact-box-title, .contact-box-phone, .company-name-ar-line, .company-name-en, .pill-label, .pill-value'
+            )
+            .forEach((el) => {
+              (el as HTMLElement).style.whiteSpace = 'nowrap';
+            });
 
-          // طبّق خط ثابت وتنعيم (بدون أي translate/top)
-          const all = cloned.querySelectorAll('*');
-          all.forEach((node) => {
-            const h = node as HTMLElement;
-            h.style.fontFamily = "'Cairo', sans-serif";
-            h.style.textDecoration = 'none';
-            h.style.webkitFontSmoothing = 'antialiased';
-            h.style.textRendering = 'optimizeLegibility';
-          });
-
-          // RTL للأجزاء العربية المهمة (بدون bidi-override لأنه يسبب مشاكل أثناء الرسم)
-          const rtl = cloned.querySelectorAll(
-            '.company-name-ar-line, .contact-box-title, .action-title, .pill-label, .pill-value,' +
-              ' .account-label, .account-value, .card-label, .card-value, .box-label,' +
-              ' .notice-box, .amount-words-box, .detail-label, .detail-value, .notice-bar'
-          );
-          rtl.forEach((node) => {
-            const h = node as HTMLElement;
-            h.style.direction = 'rtl';
-            h.style.unicodeBidi = 'plaintext';
-            h.style.letterSpacing = '0';
-          });
+          // اتجاه العربية مضبوط (أفضل من bidi-override لأنه قد يكسر قياسات بعض العناصر)
+          clonedContainer.style.direction = 'rtl';
+          clonedContainer.style.unicodeBidi = 'plaintext';
         },
       });
 
+      // 4) تنزيل الصورة
       const image = canvas.toDataURL('image/png', 1.0);
       const link = document.createElement('a');
       link.href = image;
@@ -86,6 +71,9 @@ const MoneyTransferReceipt: React.FC = () => {
     } catch (error) {
       console.error('Error exporting receipt:', error);
       alert('حدث خطأ أثناء تصدير الإشعار. يرجى المحاولة مرة أخرى.');
+    } finally {
+      // مهم جدًا: أعد الوضع الطبيعي بعد التصدير
+      node.classList.remove('exporting');
     }
   };
 
@@ -185,57 +173,4 @@ const MoneyTransferReceipt: React.FC = () => {
               <div className="amount-words-box">أربعمائة دولار أزرق لا غير</div>
             </div>
 
-            <div className="statement-code-row">
-              <div className="statement-box">
-                <span className="box-label">البيان</span>
-              </div>
-              <div className="code-box">
-                <span className="box-label">الكود</span>
-              </div>
-            </div>
-
-            <div className="bottom-section">
-              <div className="transfer-details">
-                <div className="detail-row">
-                  <span className="detail-label">رقم الحوالة:</span>
-                  <span className="detail-value">1126752892</span>
-                </div>
-
-                <div className="detail-row">
-                  <span className="detail-label">المرسل:</span>
-                  <span className="detail-value">هشام فؤاد سعيد قاسم الراسمي</span>
-                </div>
-
-                <div className="detail-row">
-                  <span className="detail-label">المستلم:</span>
-                  <span className="detail-value">صالح أحمد عبده أحمد عمر</span>
-                </div>
-
-                <div className="detail-row">
-                  <span className="detail-label">الجهة:</span>
-                  <span className="detail-value">شبكة الامتياز</span>
-                </div>
-
-                <div className="detail-row">
-                  <span className="detail-label">هشام فؤاد سعيد قاسم الراسمي/الرقم العام:</span>
-                  <span className="detail-value">1126752892</span>
-                </div>
-              </div>
-
-              <div className="qr-container">
-                <div className="qr-placeholder">QR</div>
-              </div>
-            </div>
-
-            <div className="final-notice-row">
-              <div className="timestamp-pill">12/09/2025 م 08:24:16</div>
-              <div className="notice-bar">هذا الإشعار لا يلزم ختم أو توقيع</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default MoneyTransferReceipt;
+            <div className="statement-c
