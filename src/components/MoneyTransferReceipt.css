@@ -195,10 +195,8 @@
   padding: 0 16px;
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 6px;
   font-size: 13px;
-  min-height: 38px;
   height: 38px;
 }
 
@@ -206,21 +204,17 @@
   color: #dc2626;
   font-weight: 700;
   text-decoration: none !important;
-  line-height: 1.1;
+  line-height: 1;
   margin: 0;
   padding: 0;
-  display: inline-flex;
-  align-items: center;
 }
 
 .pill-value {
   color: #000000;
   font-weight: 700;
-  line-height: 1.1;
+  line-height: 1;
   margin: 0;
   padding: 0;
-  display: inline-flex;
-  align-items: center;
 }
 
 .action-title {
@@ -231,12 +225,6 @@
   font-size: 20px;
   font-weight: 800;
   box-shadow: 0 4px 12px rgba(45, 49, 146, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 44px;
-  line-height: 1.1;
-  margin: 0;
 }
 
 .customer-row {
@@ -253,7 +241,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 38px;
   height: 38px;
 }
 
@@ -261,11 +248,9 @@
   color: #000000;
   font-size: 14px;
   font-weight: 700;
-  line-height: 1.1;
+  line-height: 1;
   margin: 0;
   padding: 0;
-  display: inline-flex;
-  align-items: center;
 }
 
 .account-label-box {
@@ -276,7 +261,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 38px;
   height: 38px;
 }
 
@@ -285,11 +269,9 @@
   font-size: 13px;
   font-weight: 700;
   text-decoration: none !important;
-  line-height: 1.1;
+  line-height: 1;
   margin: 0;
   padding: 0;
-  display: inline-flex;
-  align-items: center;
 }
 
 .customer-name-box {
@@ -305,10 +287,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 38px;
   height: 38px;
-  line-height: 1.1;
-  margin: 0;
+  line-height: 1;
 }
 
 .customer-label-box {
@@ -323,10 +303,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 38px;
   height: 38px;
-  line-height: 1.1;
-  margin: 0;
+  line-height: 1;
 }
 
 .notice-row {
@@ -343,11 +321,6 @@
   color: #000000;
   background: #ffffff;
   line-height: 1.4;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 32px;
-  margin: 0;
 }
 
 .four-cards-row {
@@ -360,14 +333,13 @@
   flex: 1;
   border: 2px solid #2D3192;
   border-radius: 16px;
-  padding: 8px 4px;
+  padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 4px;
   background: #ffffff;
-  min-height: 60px;
   height: 60px;
 }
 
@@ -377,12 +349,9 @@
   font-weight: 700;
   text-align: center;
   text-decoration: none !important;
-  line-height: 1.1;
+  line-height: 1;
   margin: 0;
   padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .card-value {
@@ -390,12 +359,9 @@
   font-size: 16px;
   font-weight: 700;
   text-align: center;
-  line-height: 1.1;
+  line-height: 1;
   margin: 0;
   padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .card-currency {
@@ -416,12 +382,6 @@
   font-weight: 700;
   color: #000000;
   background: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 36px;
-  line-height: 1.2;
-  margin: 0;
 }
 
 .statement-code-row {
@@ -440,7 +400,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 45px;
   height: 45px;
 }
 
@@ -455,7 +414,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 45px;
   height: 45px;
 }
 
@@ -463,11 +421,9 @@
   color: #2563eb;
   font-weight: 700;
   text-decoration: none !important;
-  line-height: 1.1;
+  line-height: 1;
   margin: 0;
   padding: 0;
-  display: inline-flex;
-  align-items: center;
 }
 
 .bottom-section {
@@ -493,7 +449,7 @@
   font-weight: 700;
   color: #9ca3af;
   background: #ffffff;
-  line-height: 1.1;
+  line-height: 1;
   margin: 0;
   padding: 0;
 }
@@ -546,12 +502,6 @@
   text-align: center;
   font-size: 12px;
   font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 32px;
-  line-height: 1.2;
-  margin: 0;
 }
 
 .timestamp-pill {
@@ -563,12 +513,6 @@
   font-weight: 700;
   white-space: nowrap;
   direction: ltr;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 32px;
-  line-height: 1.1;
-  margin: 0;
 }
 
 @media print {
