@@ -41,7 +41,7 @@
 .export-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(45, 49, 146, 0.4);
-}action-title
+}
 
 .export-button:active {
   transform: translateY(0);
@@ -617,4 +617,11 @@
   .detail-value {
     color: #000000 !important;
   }
+}
+.action-title{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;         /* أو الرقم الذي يناسبك */
+  padding: 0 50px;      /* بدل padding العمودي */
 }
