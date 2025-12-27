@@ -15,7 +15,7 @@ const MoneyTransferReceipt: React.FC = () => {
       await document.fonts.load('800 20px Cairo');
       await document.fonts.load('600 14px Cairo');
 
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
       const canvas = await html2canvas(receiptRef.current, {
         scale: 3,
@@ -29,112 +29,121 @@ const MoneyTransferReceipt: React.FC = () => {
         windowHeight: 634,
         foreignObjectRendering: false,
         letterRendering: false,
+
         onclone: (clonedDoc) => {
-          const clonedElement = clonedDoc.querySelector('.receipt-container');
-          if (clonedElement) {
-            const allElements = clonedElement.querySelectorAll('*');
-            allElements.forEach((el: Element) => {
-              const htmlEl = el as HTMLElement;
-              const computedStyle = window.getComputedStyle(el);
+          const clonedElement = clonedDoc.querySelector('.receipt-container') as HTMLElement | null;
+          if (!clonedElement) return;
 
-              htmlEl.style.fontFamily = "'Cairo', sans-serif";
-              htmlEl.style.textDecoration = 'none';
-              htmlEl.style.webkitFontSmoothing = 'antialiased';
-              htmlEl.style.fontSmooth = 'always';
-              htmlEl.style.textRendering = 'optimizeLegibility';
-              htmlEl.style.letterSpacing = '0';
-              htmlEl.style.fontFeatureSettings = '"liga" 1, "calt" 1';
-              htmlEl.style.verticalAlign = 'middle';
+          const view = clonedDoc.defaultView || window;
 
-              if (computedStyle.fontWeight) {
-                htmlEl.style.fontWeight = computedStyle.fontWeight;
-              }
-              if (computedStyle.fontSize) {
-                htmlEl.style.fontSize = computedStyle.fontSize;
-              }
-              if (computedStyle.lineHeight) {
-                htmlEl.style.lineHeight = computedStyle.lineHeight;
-              }
-            });
+          // 1) Normalize all elements styles for canvas rendering
+          const allElements = clonedElement.querySelectorAll('*');
+          allElements.forEach((el) => {
+            const htmlEl = el as HTMLElement;
+            const computedStyle = view.getComputedStyle(el);
 
-            const arabicTextElements = clonedElement.querySelectorAll(
-              '.company-name-ar-line, .contact-box-title, .action-title, .pill-label, .account-label, .card-label, .box-label, .customer-name-box, .notice-box, .card-value, .amount-words-box, .detail-label, .detail-value, .notice-bar'
-            );
-            arabicTextElements.forEach((el: Element) => {
-              const htmlEl = el as HTMLElement;
-              htmlEl.style.fontFamily = "'Cairo', sans-serif";
-              htmlEl.style.direction = 'rtl';
-              htmlEl.style.unicodeBidi = 'plaintext';
-              htmlEl.style.textAlign = 'center';
-              htmlEl.style.letterSpacing = '0';
-              htmlEl.style.whiteSpace = 'normal';
-              htmlEl.style.fontKerning = 'normal';
-              htmlEl.style.fontFeatureSettings = '"liga" 1, "calt" 1, "curs" 1';
-              htmlEl.style.verticalAlign = 'middle';
-            });
+            htmlEl.style.fontFamily = "'Cairo', sans-serif";
+            htmlEl.style.textDecoration = 'none';
+            htmlEl.style.webkitFontSmoothing = 'antialiased';
+            htmlEl.style.textRendering = 'optimizeLegibility';
+            htmlEl.style.letterSpacing = '0';
+            htmlEl.style.fontFeatureSettings = '"liga" 1, "calt" 1';
+            htmlEl.style.verticalAlign = 'middle';
 
-            const headerArabicElements = clonedElement.querySelectorAll('.company-name-ar-line, .contact-box-title');
-            headerArabicElements.forEach((el: Element) => {
-              const htmlEl = el as HTMLElement;
-              htmlEl.style.whiteSpace = 'nowrap';
-              htmlEl.style.display = 'block';
-              htmlEl.style.width = '100%';
-            });
-const actionTitle = clonedElement.querySelector('.action-title') as HTMLElement | null;
-if (actionTitle) actionTitle.style.transform = 'translateY(-1px)';
+            if (computedStyle.fontWeight) htmlEl.style.fontWeight = computedStyle.fontWeight;
+            if (computedStyle.fontSize) htmlEl.style.fontSize = computedStyle.fontSize;
+            if (computedStyle.lineHeight) htmlEl.style.lineHeight = computedStyle.lineHeight;
+          });
 
-            const labels = clonedElement.querySelectorAll('.pill-label, .account-label, .card-label, .box-label');
-            labels.forEach((label: Element) => {
-              const htmlLabel = label as HTMLElement;
-              htmlLabel.style.textDecoration = 'none';
-              htmlLabel.style.borderBottom = 'none';
-            });
+          // 2) Arabic shaping + bidi
+          const arabicTextElements = clonedElement.querySelectorAll(
+            '.company-name-ar-line, .contact-box-title, .action-title, .pill-label, .account-label, .card-label, .box-label, .customer-name-box, .notice-box, .card-value, .amount-words-box, .detail-label, .detail-value, .notice-bar'
+          );
+          arabicTextElements.forEach((el) => {
+            const htmlEl = el as HTMLElement;
+            htmlEl.style.fontFamily = "'Cairo', sans-serif";
+            htmlEl.style.direction = 'rtl';
+            htmlEl.style.unicodeBidi = 'plaintext';
+            htmlEl.style.textAlign = 'center';
+            htmlEl.style.letterSpacing = '0';
+            htmlEl.style.whiteSpace = 'normal';
+            htmlEl.style.fontKerning = 'normal';
+            htmlEl.style.fontFeatureSettings = '"liga" 1, "calt" 1, "curs" 1';
+            htmlEl.style.verticalAlign = 'middle';
+          });
 
-            const containerElements = clonedElement.querySelectorAll(
-  '.action-title, .date-pill, .document-pill, .account-number-box, .account-label-box, .customer-name-box, .customer-label-box, .info-card, .statement-box, .code-box, .notice-bar, .timestamp-pill, .notice-box, .amount-words-box'
-);
+          // Header Arabic lines stay in one line
+          const headerArabicElements = clonedElement.querySelectorAll('.company-name-ar-line, .contact-box-title');
+          headerArabicElements.forEach((el) => {
+            const htmlEl = el as HTMLElement;
+            htmlEl.style.whiteSpace = 'nowrap';
+            htmlEl.style.display = 'block';
+            htmlEl.style.width = '100%';
+          });
 
-containerElements.forEach((el) => {
-  const box = el as HTMLElement;
-  box.style.display = 'flex';
-  box.style.alignItems = 'center';
-  box.style.justifyContent = 'center';
-});
-const nudgeText = clonedElement.querySelectorAll(
-  '.action-title, .pill-label, .pill-value, .account-label, .account-value, .card-label, .card-value, .box-label, .notice-bar, .timestamp-pill'
-);
+          // Remove any underline/borders from labels
+          const labels = clonedElement.querySelectorAll('.pill-label, .account-label, .card-label, .box-label');
+          labels.forEach((label) => {
+            const htmlLabel = label as HTMLElement;
+            htmlLabel.style.textDecoration = 'none';
+            htmlLabel.style.borderBottom = 'none';
+          });
 
-nudgeText.forEach((el) => {
-  const t = el as HTMLElement;
-  t.style.position = 'relative';
-  t.style.top = '-2px';     // جرّب -1px أو -2px حسب الأفضل
-  t.style.lineHeight = 'normal';
-});
+          // 3) Make the important containers flex-centered (stable in html2canvas)
+          const containerElements = clonedElement.querySelectorAll(
+            '.date-pill, .document-pill, .account-number-box, .account-label-box, .customer-name-box, .customer-label-box, .info-card, .statement-box, .code-box'
+          );
+          containerElements.forEach((el) => {
+            const box = el as HTMLElement;
+            box.style.display = 'flex';
+            box.style.alignItems = 'center';
+            box.style.justifyContent = 'center';
+          });
 
-            containerElements.forEach((container: Element) => {
-              const htmlContainer = container as HTMLElement;
-              htmlContainer.style.display = 'flex';
-              htmlContainer.style.alignItems = 'center';
-              htmlContainer.style.justifyContent = 'center';
-            });
+          // Ensure info-card keeps column layout
+          const infoCards = clonedElement.querySelectorAll('.info-card');
+          infoCards.forEach((card) => {
+            const htmlCard = card as HTMLElement;
+            htmlCard.style.flexDirection = 'column';
+          });
 
-            const flexColumnElements = clonedElement.querySelectorAll('.info-card');
-            flexColumnElements.forEach((card: Element) => {
-              const htmlCard = card as HTMLElement;
-              htmlCard.style.flexDirection = 'column';
-            });
+          // 4) The REAL fix: force fixed height + no vertical padding for the 3 problem elements
+          const forceCenter = (selector: string, height: string, padding: string) => {
+            const el = clonedElement.querySelector(selector) as HTMLElement | null;
+            if (!el) return;
 
-            const textElements = clonedElement.querySelectorAll(
-              '.pill-label, .pill-value, .card-label, .card-value, .account-label, .account-value, .box-label, .customer-label-box, .customer-name-box'
-            );
-            textElements.forEach((el: Element) => {
-              const htmlEl = el as HTMLElement;
-              htmlEl.style.paddingTop = '0';
-              htmlEl.style.lineHeight = '1.2';
-              htmlEl.style.display = 'inline-block';         
-              htmlEl.style.transform = 'translateY(-1px)';    
-            });
-          }
+            el.style.display = 'flex';
+            el.style.alignItems = 'center';
+            el.style.justifyContent = 'center';
+            el.style.height = height;
+            el.style.padding = padding;
+            el.style.lineHeight = '1';
+          };
+
+          // These were the ones that usually render "low" in the exported image
+          forceCenter('.action-title', '52px', '0 50px');
+          forceCenter('.notice-bar', '34px', '0 16px');
+          forceCenter('.timestamp-pill', '34px', '0 14px');
+
+          // 5) Prevent baseline drift for small texts inside pills/cards
+          clonedElement.querySelectorAll(
+            '.pill-label, .pill-value, .account-label, .account-value, .card-label, .card-value, .box-label'
+          ).forEach((node) => {
+            const t = node as HTMLElement;
+            t.style.display = 'block';
+            t.style.lineHeight = '1.2';
+            t.style.margin = '0';
+            t.style.padding = '0';
+          });
+
+          // Keep these centered nicely too
+          const textElements = clonedElement.querySelectorAll(
+            '.customer-label-box, .customer-name-box'
+          );
+          textElements.forEach((el) => {
+            const htmlEl = el as HTMLElement;
+            htmlEl.style.lineHeight = '1.2';
+          });
         },
       });
 
@@ -151,17 +160,13 @@ nudgeText.forEach((el) => {
 
   return (
     <div className="receipt-page">
-      <button
-        onClick={handleExportAsImage}
-        className="export-button"
-        title="تصدير كصورة"
-      >
+      <button onClick={handleExportAsImage} className="export-button" title="تصدير كصورة">
         <Download size={20} />
         <span>تصدير كصورة</span>
       </button>
+
       <div className="receipt-container" ref={receiptRef}>
         <div className="receipt-inner-frame">
-
           <div className="receipt-header">
             <div className="header-right">
               <div className="contact-box">
@@ -188,7 +193,6 @@ nudgeText.forEach((el) => {
           </div>
 
           <div className="receipt-content">
-
             <div className="title-row">
               <div className="date-pill">
                 <span className="pill-label">التاريخ:</span>
@@ -204,15 +208,16 @@ nudgeText.forEach((el) => {
             </div>
 
             <div className="customer-row">
-              <div className="customer-label-box">
-                عميلنا
-              </div>
+              <div className="customer-label-box">عميلنا</div>
+
               <div className="customer-name-box">
                 هشام فؤاد سعيد قاسم الراسمي
               </div>
+
               <div className="account-label-box">
                 <span className="account-label">رقم الحسابي:</span>
               </div>
+
               <div className="account-number-box">
                 <span className="account-value">1231132</span>
               </div>
@@ -229,14 +234,19 @@ nudgeText.forEach((el) => {
                 <div className="card-label">مبلغ الحساب</div>
                 <div className="card-value">400</div>
               </div>
+
               <div className="info-card">
                 <div className="card-label">عملة الحساب</div>
                 <div className="card-value">دولار أزرق</div>
               </div>
+
               <div className="info-card">
                 <div className="card-label">العمولة</div>
-                <div className="card-value">400 <span className="card-currency">ريال يمني</span></div>
+                <div className="card-value">
+                  400 <span className="card-currency">ريال يمني</span>
+                </div>
               </div>
+
               <div className="info-card">
                 <div className="card-label">الإجمالي</div>
                 <div className="card-value">400</div>
@@ -291,7 +301,6 @@ nudgeText.forEach((el) => {
               <div className="timestamp-pill">12/09/2025 م 08:24:16</div>
               <div className="notice-bar">هذا الإشعار لا يلزم ختم أو توقيع</div>
             </div>
-
           </div>
         </div>
       </div>
