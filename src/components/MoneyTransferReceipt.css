@@ -192,11 +192,12 @@
   background: #ffffff;
   border: 2px solid #2D3192;
   border-radius: 20px;
-  padding: 6px 16px;
+  padding: 8px 16px;
   display: flex;
   align-items: center;
   gap: 6px;
   font-size: 13px;
+  min-height: 38px;
 }
 
 .pill-label {
@@ -230,10 +231,11 @@
   background: #ffffff;
   border: 2px solid #2D3192;
   border-radius: 16px;
-  padding: 6px 16px;
+  padding: 8px 16px;
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 38px;
 }
 
 .account-value {
@@ -246,10 +248,11 @@
   background: #ffffff;
   border: 2px solid #2D3192;
   border-radius: 16px;
-  padding: 6px 14px;
+  padding: 8px 14px;
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 38px;
 }
 
 .account-label {
@@ -264,22 +267,30 @@
   background: #ffffff;
   border: 2px solid #2D3192;
   border-radius: 16px;
-  padding: 6px 16px;
+  padding: 8px 16px;
   color: #000000;
   font-size: 14px;
   font-weight: 700;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
 }
 
 .customer-label-box {
   background: #ffffff;
   border: 2px solid #2D3192;
   border-radius: 16px;
-  padding: 6px 20px;
+  padding: 8px 20px;
   color: #2563eb;
   font-size: 13px;
   font-weight: 700;
   text-decoration: none !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
 }
 
 .notice-row {
@@ -308,13 +319,14 @@
   flex: 1;
   border: 2px solid #2D3192;
   border-radius: 16px;
-  padding: 6px 8px;
+  padding: 10px 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
+  gap: 4px;
   background: #ffffff;
+  min-height: 60px;
 }
 
 .card-label {
@@ -323,7 +335,10 @@
   font-weight: 700;
   text-align: center;
   text-decoration: none !important;
-  line-height: 1.3;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .card-value {
@@ -331,7 +346,10 @@
   font-size: 16px;
   font-weight: 700;
   text-align: center;
-  line-height: 1.2;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .card-currency {
@@ -363,26 +381,37 @@
   flex: 1;
   border: 2px solid #2D3192;
   border-radius: 16px;
-  padding: 6px 14px;
+  padding: 10px 14px;
   font-size: 13px;
   background: #ffffff;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.3;
+  min-height: 45px;
 }
 
 .code-box {
   width: 100px;
   border: 2px solid #2D3192;
   border-radius: 16px;
-  padding: 6px 14px;
+  padding: 10px 14px;
   font-size: 13px;
   background: #ffffff;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.3;
+  min-height: 45px;
 }
 
 .box-label {
   color: #2563eb;
   font-weight: 700;
   text-decoration: none !important;
+  line-height: 1.3;
 }
 
 .bottom-section {
@@ -408,6 +437,7 @@
   font-weight: 700;
   color: #9ca3af;
   background: #ffffff;
+  line-height: 1;
 }
 
 .transfer-details {
