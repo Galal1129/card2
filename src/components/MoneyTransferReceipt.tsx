@@ -42,6 +42,11 @@ const MoneyTransferReceipt: React.FC = () => {
 
           // فعّل Export Mode داخل النسخة المستنسخة أيضًا
           clonedContainer.classList.add('exporting');
+clonedContainer.querySelectorAll('*').forEach((el) => {
+  const h = el as HTMLElement;
+  h.style.webkitFontSmoothing = 'antialiased';
+  h.style.textRendering = 'geometricPrecision';
+});
 
           // تثبيت المقاس (يمنع أي اختلافات في الطباعة داخل clone)
           clonedContainer.style.width = '900px';
