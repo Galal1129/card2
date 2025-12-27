@@ -64,7 +64,7 @@ const MoneyTransferReceipt: React.FC = () => {
               const htmlEl = el as HTMLElement;
               htmlEl.style.fontFamily = "'Cairo', sans-serif";
               htmlEl.style.direction = 'rtl';
-              htmlEl.style.unicodeBidi = 'bidi-override';
+              htmlEl.style.unicodeBidi = 'plaintext';
               htmlEl.style.textAlign = 'center';
               htmlEl.style.letterSpacing = '0';
               htmlEl.style.whiteSpace = 'normal';
