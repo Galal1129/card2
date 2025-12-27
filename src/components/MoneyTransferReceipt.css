@@ -622,6 +622,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 52px;         /* أو الرقم الذي يناسبك */
-  padding: 0 50px;      /* بدل padding العمودي */
+  height: 52px;        
+  padding: 0 50px;      
 }
