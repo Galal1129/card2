@@ -453,3 +453,21 @@
 .receipt-container.is-exporting .action-title {
   line-height: 1 !important;
 }
+/* يساعد على ثبات محاذاة النص عند التصدير */
+.pill-label,
+.pill-value,
+.account-label,
+.account-value,
+.card-label,
+.card-value,
+.box-label {
+  line-height: 1.25;
+}
+
+/* يجعل عنوان (إرسال حوالة) ثابت ومحاذي للوسط */
+.action-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
