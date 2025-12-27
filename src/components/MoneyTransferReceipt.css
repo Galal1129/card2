@@ -625,3 +625,4 @@
   height: 52px;        
   padding: 0 50px;      
 }
+htmlEl.style.transform = 'translateY(-1px)';
