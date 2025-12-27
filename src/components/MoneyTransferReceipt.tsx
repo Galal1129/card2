@@ -10,23 +10,49 @@ const MoneyTransferReceipt: React.FC = () => {
     if (!receiptRef.current) return;
 
     try {
+      await document.fonts.ready;
+
+      await new Promise(resolve => setTimeout(resolve, 500));
+
       const canvas = await html2canvas(receiptRef.current, {
-        scale: 2,
+        scale: 3,
         backgroundColor: '#ffffff',
         logging: false,
+        useCORS: true,
+        allowTaint: true,
         width: 900,
         height: 634,
         windowWidth: 900,
         windowHeight: 634,
+        onclone: (clonedDoc) => {
+          const clonedElement = clonedDoc.querySelector('.receipt-container');
+          if (clonedElement) {
+            const allElements = clonedElement.querySelectorAll('*');
+            allElements.forEach((el: Element) => {
+              const htmlEl = el as HTMLElement;
+              htmlEl.style.textDecoration = 'none';
+              htmlEl.style.webkitFontSmoothing = 'antialiased';
+              htmlEl.style.fontSmooth = 'always';
+            });
+
+            const labels = clonedElement.querySelectorAll('.pill-label, .account-label, .card-label, .box-label');
+            labels.forEach((label: Element) => {
+              const htmlLabel = label as HTMLElement;
+              htmlLabel.style.textDecoration = 'none';
+              htmlLabel.style.borderBottom = 'none';
+            });
+          }
+        },
       });
 
-      const image = canvas.toDataURL('image/png');
+      const image = canvas.toDataURL('image/png', 1.0);
       const link = document.createElement('a');
       link.href = image;
       link.download = 'receipt-31021.png';
       link.click();
     } catch (error) {
       console.error('Error exporting receipt:', error);
+      alert('حدث خطأ أثناء تصدير الإشعار. يرجى المحاولة مرة أخرى.');
     }
   };
 
@@ -62,8 +88,8 @@ const MoneyTransferReceipt: React.FC = () => {
             <div className="header-left">
               <div className="contact-box">
                 <div className="contact-box-title">اليمن - صنعاء</div>
-                <div className="contact-box-phone">967781444721+</div>
-                <div className="contact-box-phone">931 994 730 967+</div>
+                <div className="contact-box-phone">+967 781 444 721</div>
+                <div className="contact-box-phone">+967 730 994 931</div>
               </div>
             </div>
           </div>
