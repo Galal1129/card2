@@ -7,143 +7,59 @@ const MoneyTransferReceipt: React.FC = () => {
   const receiptRef = useRef<HTMLDivElement>(null);
 
   const handleExportAsImage = async () => {
-    if (!receiptRef.current) return;
+    const container = receiptRef.current;
+    if (!container) return;
+
+    // فعّل وضع التصدير (CSS خاص للتصدير فقط)
+    container.classList.add('is-exporting');
 
     try {
+      // تأكد من تحميل الخط قبل التصوير
       await document.fonts.ready;
+      await document.fonts.load('400 14px Cairo');
+      await document.fonts.load('600 14px Cairo');
       await document.fonts.load('700 20px Cairo');
       await document.fonts.load('800 20px Cairo');
-      await document.fonts.load('600 14px Cairo');
 
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // اعطِ المتصفح فريمين لتثبيت الـ layout قبل html2canvas
+      await new Promise<void>((r) => requestAnimationFrame(() => r()));
+      await new Promise<void>((r) => requestAnimationFrame(() => r()));
 
-      const canvas = await html2canvas(receiptRef.current, {
+      const canvas = await html2canvas(container, {
         scale: 3,
         backgroundColor: '#ffffff',
         logging: false,
         useCORS: true,
         allowTaint: true,
+
         width: 900,
         height: 634,
         windowWidth: 900,
         windowHeight: 634,
-        foreignObjectRendering: false,
+
+        // هذا أهم تغيير لحل مشكلة نزول النص داخل البوكسات
+        foreignObjectRendering: true,
         letterRendering: false,
 
         onclone: (clonedDoc) => {
-          const clonedElement = clonedDoc.querySelector('.receipt-container') as HTMLElement | null;
-          if (!clonedElement) return;
+          // تأكد أن خط Cairo موجود داخل النسخة المستنسخة
+          const hasCairo = clonedDoc.querySelector('link[data-cairo="1"]');
+          if (!hasCairo) {
+            const link = clonedDoc.createElement('link');
+            link.setAttribute('data-cairo', '1');
+            link.rel = 'stylesheet';
+            link.href =
+              'https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap';
+            clonedDoc.head.appendChild(link);
+          }
 
-          const view = clonedDoc.defaultView || window;
+          // طبق نفس وضع التصدير على العنصر داخل النسخة المستنسخة
+          const clonedContainer = clonedDoc.querySelector('.receipt-container') as HTMLElement | null;
+          if (clonedContainer) clonedContainer.classList.add('is-exporting');
 
-          // 1) Normalize all elements styles for canvas rendering
-          const allElements = clonedElement.querySelectorAll('*');
-          allElements.forEach((el) => {
-            const htmlEl = el as HTMLElement;
-            const computedStyle = view.getComputedStyle(el);
-
-            htmlEl.style.fontFamily = "'Cairo', sans-serif";
-            htmlEl.style.textDecoration = 'none';
-            htmlEl.style.webkitFontSmoothing = 'antialiased';
-            htmlEl.style.textRendering = 'optimizeLegibility';
-            htmlEl.style.letterSpacing = '0';
-            htmlEl.style.fontFeatureSettings = '"liga" 1, "calt" 1';
-            htmlEl.style.verticalAlign = 'middle';
-
-            if (computedStyle.fontWeight) htmlEl.style.fontWeight = computedStyle.fontWeight;
-            if (computedStyle.fontSize) htmlEl.style.fontSize = computedStyle.fontSize;
-            if (computedStyle.lineHeight) htmlEl.style.lineHeight = computedStyle.lineHeight;
-          });
-
-          // 2) Arabic shaping + bidi
-          const arabicTextElements = clonedElement.querySelectorAll(
-            '.company-name-ar-line, .contact-box-title, .action-title, .pill-label, .account-label, .card-label, .box-label, .customer-name-box, .notice-box, .card-value, .amount-words-box, .detail-label, .detail-value, .notice-bar'
-          );
-          arabicTextElements.forEach((el) => {
-            const htmlEl = el as HTMLElement;
-            htmlEl.style.fontFamily = "'Cairo', sans-serif";
-            htmlEl.style.direction = 'rtl';
-            htmlEl.style.unicodeBidi = 'plaintext';
-            htmlEl.style.textAlign = 'center';
-            htmlEl.style.letterSpacing = '0';
-            htmlEl.style.whiteSpace = 'normal';
-            htmlEl.style.fontKerning = 'normal';
-            htmlEl.style.fontFeatureSettings = '"liga" 1, "calt" 1, "curs" 1';
-            htmlEl.style.verticalAlign = 'middle';
-          });
-
-          // Header Arabic lines stay in one line
-          const headerArabicElements = clonedElement.querySelectorAll('.company-name-ar-line, .contact-box-title');
-          headerArabicElements.forEach((el) => {
-            const htmlEl = el as HTMLElement;
-            htmlEl.style.whiteSpace = 'nowrap';
-            htmlEl.style.display = 'block';
-            htmlEl.style.width = '100%';
-          });
-
-          // Remove any underline/borders from labels
-          const labels = clonedElement.querySelectorAll('.pill-label, .account-label, .card-label, .box-label');
-          labels.forEach((label) => {
-            const htmlLabel = label as HTMLElement;
-            htmlLabel.style.textDecoration = 'none';
-            htmlLabel.style.borderBottom = 'none';
-          });
-
-          // 3) Make the important containers flex-centered (stable in html2canvas)
-          const containerElements = clonedElement.querySelectorAll(
-            '.date-pill, .document-pill, .account-number-box, .account-label-box, .customer-name-box, .customer-label-box, .info-card, .statement-box, .code-box'
-          );
-          containerElements.forEach((el) => {
-            const box = el as HTMLElement;
-            box.style.display = 'flex';
-            box.style.alignItems = 'center';
-            box.style.justifyContent = 'center';
-          });
-
-          // Ensure info-card keeps column layout
-          const infoCards = clonedElement.querySelectorAll('.info-card');
-          infoCards.forEach((card) => {
-            const htmlCard = card as HTMLElement;
-            htmlCard.style.flexDirection = 'column';
-          });
-
-          // 4) The REAL fix: force fixed height + no vertical padding for the 3 problem elements
-          const forceCenter = (selector: string, height: string, padding: string) => {
-            const el = clonedElement.querySelector(selector) as HTMLElement | null;
-            if (!el) return;
-
-            el.style.display = 'flex';
-            el.style.alignItems = 'center';
-            el.style.justifyContent = 'center';
-            el.style.height = height;
-            el.style.padding = padding;
-            el.style.lineHeight = '1';
-          };
-
-          // These were the ones that usually render "low" in the exported image
-          forceCenter('.action-title', '52px', '0 50px');
-          forceCenter('.notice-bar', '34px', '0 16px');
-          forceCenter('.timestamp-pill', '34px', '0 14px');
-
-          // 5) Prevent baseline drift for small texts inside pills/cards
-          clonedElement.querySelectorAll(
-            '.pill-label, .pill-value, .account-label, .account-value, .card-label, .card-value, .box-label'
-          ).forEach((node) => {
-            const t = node as HTMLElement;
-            t.style.display = 'block';
-            t.style.lineHeight = '1.2';
-            t.style.margin = '0';
-            t.style.padding = '0';
-          });
-
-          // Keep these centered nicely too
-          const textElements = clonedElement.querySelectorAll(
-            '.customer-label-box, .customer-name-box'
-          );
-          textElements.forEach((el) => {
-            const htmlEl = el as HTMLElement;
-            htmlEl.style.lineHeight = '1.2';
-          });
+          // ثبّت الاتجاه والخط داخل النسخة
+          clonedDoc.documentElement.dir = 'rtl';
+          clonedDoc.body.style.fontFamily = "'Cairo', sans-serif";
         },
       });
 
@@ -155,6 +71,9 @@ const MoneyTransferReceipt: React.FC = () => {
     } catch (error) {
       console.error('Error exporting receipt:', error);
       alert('حدث خطأ أثناء تصدير الإشعار. يرجى المحاولة مرة أخرى.');
+    } finally {
+      // أزل وضع التصدير بعد الانتهاء
+      container.classList.remove('is-exporting');
     }
   };
 
@@ -210,9 +129,7 @@ const MoneyTransferReceipt: React.FC = () => {
             <div className="customer-row">
               <div className="customer-label-box">عميلنا</div>
 
-              <div className="customer-name-box">
-                هشام فؤاد سعيد قاسم الراسمي
-              </div>
+              <div className="customer-name-box">هشام فؤاد سعيد قاسم الراسمي</div>
 
               <div className="account-label-box">
                 <span className="account-label">رقم الحسابي:</span>
@@ -234,19 +151,16 @@ const MoneyTransferReceipt: React.FC = () => {
                 <div className="card-label">مبلغ الحساب</div>
                 <div className="card-value">400</div>
               </div>
-
               <div className="info-card">
                 <div className="card-label">عملة الحساب</div>
                 <div className="card-value">دولار أزرق</div>
               </div>
-
               <div className="info-card">
                 <div className="card-label">العمولة</div>
                 <div className="card-value">
                   400 <span className="card-currency">ريال يمني</span>
                 </div>
               </div>
-
               <div className="info-card">
                 <div className="card-label">الإجمالي</div>
                 <div className="card-value">400</div>
@@ -254,9 +168,7 @@ const MoneyTransferReceipt: React.FC = () => {
             </div>
 
             <div className="amount-words-row">
-              <div className="amount-words-box">
-                أربعمائة دولار أزرق لا غير
-              </div>
+              <div className="amount-words-box">أربعمائة دولار أزرق لا غير</div>
             </div>
 
             <div className="statement-code-row">
