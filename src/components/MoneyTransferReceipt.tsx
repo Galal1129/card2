@@ -94,6 +94,14 @@ const MoneyTransferReceipt: React.FC = () => {
               htmlCard.style.alignItems = 'center';
               htmlCard.style.justifyContent = 'center';
             });
+
+            const textElements = clonedElement.querySelectorAll(
+              '.card-label, .card-value, .pill-label, .pill-value, .account-label, .account-value, .box-label, .customer-label-box, .customer-name-box'
+            );
+            textElements.forEach((el: Element) => {
+              const htmlEl = el as HTMLElement;
+              htmlEl.style.transform = 'translateY(-2px)';
+            });
           }
         },
       });
