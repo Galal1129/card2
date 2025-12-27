@@ -12,7 +12,15 @@ const MoneyTransferReceipt: React.FC = () => {
     try {
       await document.fonts.ready;
 
-      await new Promise(resolve => setTimeout(resolve, 500));
+      const fontCheck = setInterval(async () => {
+        const loaded = document.fonts.check('12px Cairo');
+        if (loaded) {
+          clearInterval(fontCheck);
+        }
+      }, 100);
+
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      clearInterval(fontCheck);
 
       const canvas = await html2canvas(receiptRef.current, {
         scale: 3,
@@ -24,15 +32,34 @@ const MoneyTransferReceipt: React.FC = () => {
         height: 634,
         windowWidth: 900,
         windowHeight: 634,
+        foreignObjectRendering: false,
         onclone: (clonedDoc) => {
           const clonedElement = clonedDoc.querySelector('.receipt-container');
           if (clonedElement) {
             const allElements = clonedElement.querySelectorAll('*');
             allElements.forEach((el: Element) => {
               const htmlEl = el as HTMLElement;
+              const computedStyle = window.getComputedStyle(el);
+              htmlEl.style.fontFamily = "'Cairo', sans-serif";
               htmlEl.style.textDecoration = 'none';
               htmlEl.style.webkitFontSmoothing = 'antialiased';
               htmlEl.style.fontSmooth = 'always';
+              htmlEl.style.textRendering = 'optimizeLegibility';
+
+              if (computedStyle.fontWeight) {
+                htmlEl.style.fontWeight = computedStyle.fontWeight;
+              }
+              if (computedStyle.fontSize) {
+                htmlEl.style.fontSize = computedStyle.fontSize;
+              }
+            });
+
+            const arabicElements = clonedElement.querySelectorAll('.contact-box-title');
+            arabicElements.forEach((el: Element) => {
+              const htmlEl = el as HTMLElement;
+              htmlEl.style.fontFamily = "'Cairo', sans-serif";
+              htmlEl.style.unicodeBidi = 'embed';
+              htmlEl.style.direction = 'rtl';
             });
 
             const labels = clonedElement.querySelectorAll('.pill-label, .account-label, .card-label, .box-label');
