@@ -518,3 +518,51 @@
   align-items: center;
   justify-content: center;
 }
+/* =========================
+   Export Fix (html2canvas)
+   ========================= */
+.receipt-container.is-exporting * {
+  letter-spacing: 0 !important;
+}
+
+.receipt-container.is-exporting .contact-box-title,
+.receipt-container.is-exporting .contact-box-phone,
+.receipt-container.is-exporting .company-name-en {
+  white-space: nowrap !important;   /* يمنع كسر السطر في الهيدر */
+  letter-spacing: 0 !important;
+}
+
+.receipt-container.is-exporting .contact-box {
+  min-width: 240px !important;      /* يعطي مساحة أكثر حتى لا ينكسر النص */
+}
+
+.receipt-container.is-exporting .company-name-en {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.receipt-container.is-exporting .pill-label,
+.receipt-container.is-exporting .pill-value,
+.receipt-container.is-exporting .account-label,
+.receipt-container.is-exporting .account-value,
+.receipt-container.is-exporting .card-label,
+.receipt-container.is-exporting .card-value,
+.receipt-container.is-exporting .box-label {
+  display: inline-flex !important;  /* حل مشكلة نزول النص داخل البوكس */
+  align-items: center !important;
+}
+
+.receipt-container.is-exporting .detail-row {
+  line-height: 1.25 !important;     /* يمنع تضخم ارتفاع السطور */
+}
+
+.receipt-container.is-exporting .detail-label,
+.receipt-container.is-exporting .detail-value {
+  white-space: nowrap !important;   /* يمنع التفاف التفاصيل الذي يخفي الفوتر */
+}
+
+.receipt-container.is-exporting .timestamp-pill {
+  white-space: nowrap !important;
+  direction: ltr !important;
+}
