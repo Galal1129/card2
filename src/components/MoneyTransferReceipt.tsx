@@ -143,7 +143,7 @@ const MoneyTransferReceipt: React.FC = () => {
               <div className="company-name-ar-line">الترف</div>
               <div className="company-name-ar-line"> للتحويلات المالية </div>
               <div className="company-name-ar-line"></div>
-              <div className="company-name-en">الترف</div>
+              <div className="company-name-en">Al-Taraf</div>
             </div>
 
             <div className="header-left">
@@ -163,7 +163,7 @@ const MoneyTransferReceipt: React.FC = () => {
                 <span className="pill-value">2025-09-12</span>
               </div>
 
-              <div className="action-title">إرسال الحوالة</div>
+              <div className="action-title">إرسال حوالة</div>
 
               <div className="document-pill">
                 <span className="pill-label">رقم المستند:</span>
@@ -173,13 +173,13 @@ const MoneyTransferReceipt: React.FC = () => {
 
             <div className="customer-row">
               <div className="customer-label-box">
-                اسم العميل
+                عميلنا
               </div>
               <div className="customer-name-box">
                 هشام فؤاد سعيد قاسم الراسمي
               </div>
               <div className="account-label-box">
-                <span className="account-label">رقم الحساب:</span>
+                <span className="account-label">رقم الحسابي:</span>
               </div>
               <div className="account-number-box">
                 <span className="account-value">1231132</span>
@@ -199,7 +199,7 @@ const MoneyTransferReceipt: React.FC = () => {
               </div>
               <div className="info-card">
                 <div className="card-label">عملة الحساب</div>
-                <div className="card-value">دولار أمريكي</div>
+                <div className="card-value">دولار أزرق</div>
               </div>
               <div className="info-card">
                 <div className="card-label">العمولة</div>
@@ -213,7 +213,7 @@ const MoneyTransferReceipt: React.FC = () => {
 
             <div className="amount-words-row">
               <div className="amount-words-box">
-                أربعمائة دولار أمريكي لا غير
+                أربعمائة دولار أزرق لا غير
               </div>
             </div>
 
@@ -256,8 +256,8 @@ const MoneyTransferReceipt: React.FC = () => {
             </div>
 
             <div className="final-notice-row">
-              <div className="timestamp-pill">2025/09/12 م - 08:24:16 صباحاً</div>
-              <div className="notice-bar">هذا إشعار ولا يلزم ختم أو توقيع</div>
+              <div className="timestamp-pill">12/09/2025 م 08:24:16</div>
+              <div className="notice-bar">هذا الإشعار لا يلزم ختم أو توقيع</div>
             </div>
 
           </div>
