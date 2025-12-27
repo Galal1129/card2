@@ -462,6 +462,43 @@
   padding: 6px 14px;
   gap: 4px;
 }
+/* ✅ Fix text baseline shift in html2canvas (IMAGE EXPORT ONLY) */
+.receipt-container.exporting .action-title,
+.receipt-container.exporting .date-pill,
+.receipt-container.exporting .document-pill,
+.receipt-container.exporting .account-number-box,
+.receipt-container.exporting .account-label-box,
+.receipt-container.exporting .customer-name-box,
+.receipt-container.exporting .customer-label-box,
+.receipt-container.exporting .info-card,
+.receipt-container.exporting .statement-box,
+.receipt-container.exporting .code-box,
+.receipt-container.exporting .notice-bar,
+.receipt-container.exporting .timestamp-pill,
+.receipt-container.exporting .notice-box,
+.receipt-container.exporting .amount-words-box {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* اجعل النص نفسه ثابت داخل الصندوق */
+.receipt-container.exporting .pill-label,
+.receipt-container.exporting .pill-value,
+.receipt-container.exporting .account-label,
+.receipt-container.exporting .account-value,
+.receipt-container.exporting .card-label,
+.receipt-container.exporting .card-value,
+.receipt-container.exporting .box-label,
+.receipt-container.exporting .notice-bar,
+.receipt-container.exporting .timestamp-pill,
+.receipt-container.exporting .action-title {
+  line-height: 1 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  transform: translateY(-1px) !important; /* ✅ رفع بسيط للصورة فقط */
+}
+
 
 .receipt-container.exporting .contact-box-title,
 .receipt-container.exporting .contact-box-phone,
