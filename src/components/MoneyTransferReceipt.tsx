@@ -111,6 +111,8 @@ const MoneyTransferReceipt: React.FC = () => {
               const htmlEl = el as HTMLElement;
               htmlEl.style.paddingTop = '0';
               htmlEl.style.lineHeight = '1.2';
+              htmlEl.style.display = 'inline-block';         
+              htmlEl.style.transform = 'translateY(-1px)';    
             });
           }
         },
