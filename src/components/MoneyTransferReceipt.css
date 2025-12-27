@@ -625,3 +625,44 @@
   height: 44px;        
   padding: 0 50px;      
 }
+
+.receipt-container.is-exporting .date-pill,
+.receipt-container.is-exporting .document-pill {
+  display: grid !important;
+  grid-auto-flow: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  column-gap: 6px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.receipt-container.is-exporting .action-title {
+  display: grid !important;
+  place-items: center !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.receipt-container.is-exporting .account-number-box,
+.receipt-container.is-exporting .account-label-box,
+.receipt-container.is-exporting .customer-name-box,
+.receipt-container.is-exporting .customer-label-box,
+.receipt-container.is-exporting .statement-box,
+.receipt-container.is-exporting .code-box,
+.receipt-container.is-exporting .qr-placeholder {
+  display: grid !important;
+  place-items: center !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.receipt-container.is-exporting .pill-label,
+.receipt-container.is-exporting .pill-value,
+.receipt-container.is-exporting .account-label,
+.receipt-container.is-exporting .account-value,
+.receipt-container.is-exporting .box-label,
+.receipt-container.is-exporting .card-label,
+.receipt-container.is-exporting .card-value {
+  line-height: 1.4 !important;
+}
