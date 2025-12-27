@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=block');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
 
 * {
   box-sizing: border-box;
@@ -16,7 +16,6 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
-  font-family: 'Cairo', sans-serif;
   direction: rtl;
   gap: 20px;
 }
@@ -29,7 +28,6 @@
   padding: 12px 32px;
   font-size: 16px;
   font-weight: 700;
-  font-family: 'Cairo', sans-serif;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -41,11 +39,6 @@
 .export-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(45, 49, 146, 0.4);
-}
-
-.export-button:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(45, 49, 146, 0.3);
 }
 
 .receipt-container {
@@ -70,7 +63,6 @@
 }
 
 .receipt-header {
-  position: relative;
   width: 100%;
   height: 150px;
   background: linear-gradient(135deg, #2D3192 0%, #1E2270 100%);
@@ -80,35 +72,21 @@
   justify-content: space-between;
   padding: 20px 40px;
   flex-shrink: 0;
-  overflow: visible;
 }
 
-.header-left {
-  position: relative;
-  z-index: 2;
+.header-left,
+.header-right {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
 }
 
 .header-center {
-  position: relative;
-  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
+  gap: 6px;
 }
-
-.header-right {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-.receipt-header { padding: 20px 12px; }
 
 .contact-box {
   background: rgba(255, 255, 255, 0.18);
@@ -118,44 +96,35 @@
   padding: 15px 25px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
   align-items: center;
-  min-width: 220px;
+  min-width: 240px;
 }
 
 .contact-box-title {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: #ffffff;
   text-align: center;
-  font-family: 'Cairo', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-  line-height: 1.5;
+  line-height: 1.2;
 }
 
 .contact-box-phone {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   color: #ffffff;
   text-align: center;
   direction: ltr;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.2px;
+  line-height: 1.2;
 }
 
 .company-name-ar-line {
-  font-size: 20px;
+  font-size: 28px;
   font-weight: 800;
   color: #ffffff;
-  line-height: 1.4;
-  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+  line-height: 1.1;
   text-align: center;
-  font-family: 'Cairo', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-  white-space: nowrap;
 }
 
 .company-name-en {
@@ -163,20 +132,19 @@
   color: #2D3192;
   font-size: 15px;
   font-weight: 700;
-  padding: 8px 30px;
+  padding: 10px 40px;
   border-radius: 25px;
-  margin-top: 8px;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.4px;
   text-align: center;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
 }
 
 .receipt-content {
   flex: 1;
-  padding: 6px 16px;
+  padding: 14px 18px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 10px;
   overflow: hidden;
 }
 
@@ -184,319 +152,233 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
 }
 
 .date-pill,
 .document-pill {
   background: #ffffff;
   border: 2px solid #2D3192;
-  border-radius: 20px;
-  padding: 0 16px;
+  border-radius: 22px;
+  padding: 0 18px;
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  height: 38px;
+  gap: 10px;
+  font-size: 14px;
+  height: 44px;
 }
 
 .pill-label {
   color: #dc2626;
-  font-weight: 700;
-  text-decoration: none !important;
+  font-weight: 800;
   line-height: 1;
-  margin: 0;
-  padding: 0;
-  vertical-align: middle;
 }
 
 .pill-value {
   color: #000000;
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1;
-  margin: 0;
-  padding: 0;
-  vertical-align: middle;
 }
 
 .action-title {
   background: linear-gradient(135deg, #2D3192 0%, #1E2270 100%);
   color: #ffffff;
-  border-radius: 22px;
-  padding: 8px 50px;
-  font-size: 20px;
+  border-radius: 26px;
+  padding: 0 70px;
+  height: 56px;
+  font-size: 24px;
   font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   box-shadow: 0 4px 12px rgba(45, 49, 146, 0.3);
 }
 
 .customer-row {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   align-items: center;
 }
 
-.account-number-box {
+.account-number-box,
+.account-label-box,
+.customer-label-box {
   background: #ffffff;
   border: 2px solid #2D3192;
-  border-radius: 16px;
-  padding: 0 16px;
+  border-radius: 18px;
+  height: 44px;
+  padding: 0 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 38px;
-}
-
-.account-value {
-  color: #000000;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 1;
-  margin: 0;
-  padding: 0;
-  vertical-align: middle;
-}
-
-.account-label-box {
-  background: #ffffff;
-  border: 2px solid #2D3192;
-  border-radius: 16px;
-  padding: 0 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 38px;
-}
-
-.account-label {
-  color: #2563eb;
-  font-size: 13px;
-  font-weight: 700;
-  text-decoration: none !important;
-  line-height: 1;
-  margin: 0;
-  padding: 0;
-  vertical-align: middle;
+  white-space: nowrap;
 }
 
 .customer-name-box {
   flex: 1;
   background: #ffffff;
   border: 2px solid #2D3192;
-  border-radius: 16px;
-  padding: 0 16px;
-  color: #000000;
-  font-size: 14px;
-  font-weight: 700;
+  border-radius: 18px;
+  height: 44px;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 38px;
-  line-height: 1;
+  font-weight: 800;
 }
 
-.customer-label-box {
-  background: #ffffff;
-  border: 2px solid #2D3192;
-  border-radius: 16px;
-  padding: 0 20px;
+.account-label,
+.customer-label-box,
+.card-label,
+.box-label {
   color: #2563eb;
-  font-size: 13px;
-  font-weight: 700;
-  text-decoration: none !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 38px;
+  font-weight: 800;
   line-height: 1;
 }
 
-.notice-row {
-  width: 100%;
+.account-value {
+  color: #000000;
+  font-weight: 800;
+  line-height: 1;
 }
 
 .notice-box {
   border: 2px solid #2D3192;
-  border-radius: 16px;
-  padding: 6px 14px;
+  border-radius: 18px;
+  padding: 10px 16px;
   text-align: center;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 700;
   color: #000000;
   background: #ffffff;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
 .four-cards-row {
   display: flex;
-  gap: 6px;
-  justify-content: center;
+  gap: 10px;
 }
 
 .info-card {
   flex: 1;
   border: 2px solid #2D3192;
-  border-radius: 16px;
-  padding: 0;
+  border-radius: 18px;
+  height: 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  background: #ffffff;
-  height: 60px;
+  gap: 6px;
 }
 
 .card-label {
-  color: #2563eb;
-  font-size: 10px;
-  font-weight: 700;
-  text-align: center;
-  text-decoration: none !important;
-  line-height: 1;
-  margin: 0;
-  padding: 0;
-  vertical-align: middle;
+  font-size: 13px;
 }
 
 .card-value {
-  color: #000000;
-  font-size: 16px;
-  font-weight: 700;
-  text-align: center;
+  font-size: 22px;
+  font-weight: 900;
+  color: #000;
   line-height: 1;
-  margin: 0;
-  padding: 0;
-  vertical-align: middle;
 }
 
 .card-currency {
-  font-size: 11px;
-  font-weight: 600;
-}
-
-.amount-words-row {
-  width: 100%;
+  font-size: 13px;
+  font-weight: 700;
 }
 
 .amount-words-box {
   border: 2px solid #2D3192;
-  border-radius: 16px;
-  padding: 6px 14px;
+  border-radius: 18px;
+  padding: 10px 16px;
   text-align: center;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 900;
   color: #000000;
   background: #ffffff;
 }
 
 .statement-code-row {
   display: flex;
-  gap: 6px;
+  gap: 10px;
 }
 
 .statement-box {
   flex: 1;
   border: 2px solid #2D3192;
-  border-radius: 16px;
-  padding: 0;
-  font-size: 13px;
-  background: #ffffff;
-  text-align: center;
+  border-radius: 18px;
+  height: 54px;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 45px;
 }
 
 .code-box {
-  width: 100px;
+  width: 150px;
   border: 2px solid #2D3192;
-  border-radius: 16px;
-  padding: 0;
-  font-size: 13px;
-  background: #ffffff;
-  text-align: center;
+  border-radius: 18px;
+  height: 54px;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 45px;
-}
-
-.box-label {
-  color: #2563eb;
-  font-weight: 700;
-  text-decoration: none !important;
-  line-height: 1;
-  margin: 0;
-  padding: 0;
-  vertical-align: middle;
 }
 
 .bottom-section {
   display: flex;
-  gap: 8px;
+  gap: 12px;
+  align-items: stretch;
 }
 
 .qr-container {
-  width: 100px;
-  height: 100px;
+  width: 150px;
   flex-shrink: 0;
 }
 
 .qr-placeholder {
   width: 100%;
-  height: 100%;
+  height: 150px;
   border: 2px solid #2D3192;
-  border-radius: 16px;
+  border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
-  font-weight: 700;
   color: #9ca3af;
-  background: #ffffff;
-  line-height: 1;
-  margin: 0;
-  padding: 0;
+  font-weight: 900;
+  font-size: 18px;
 }
 
 .transfer-details {
   flex: 1;
   border: 2px solid #2D3192;
-  border-radius: 16px;
-  padding: 8px 14px;
+  border-radius: 18px;
+  padding: 10px 16px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  background: #ffffff;
   justify-content: center;
+  gap: 6px;
 }
 
 .detail-row {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  line-height: 1.5;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.6;
 }
 
 .detail-label {
-  color: #000000;
-  font-weight: 700;
-  flex-shrink: 0;
-  min-width: fit-content;
+  font-weight: 900;
+  white-space: nowrap;
 }
 
 .detail-value {
-  color: #000000;
-  font-weight: 600;
-  flex: 1;
+  font-weight: 700;
 }
 
 .final-notice-row {
   display: flex;
-  gap: 6px;
+  gap: 10px;
   align-items: center;
 }
 
@@ -504,165 +386,70 @@
   flex: 1;
   background: linear-gradient(135deg, #2D3192 0%, #1E2270 100%);
   color: #ffffff;
-  border-radius: 16px;
-  padding: 6px 16px;
-  text-align: center;
-  font-size: 12px;
-  font-weight: 700;
+  border-radius: 18px;
+  height: 48px;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
 }
 
 .timestamp-pill {
   background: linear-gradient(135deg, #2D3192 0%, #1E2270 100%);
   color: #ffffff;
-  border-radius: 16px;
-  padding: 6px 14px;
-  font-size: 10px;
-  font-weight: 700;
+  border-radius: 18px;
+  height: 48px;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
   white-space: nowrap;
   direction: ltr;
 }
 
-@media print {
-  * {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-    color-adjust: exact !important;
-  }
-
-  body {
-    margin: 0;
-    padding: 0;
-  }
-
-  .export-button {
-    display: none !important;
-  }
-
-  .receipt-page {
-    padding: 0;
-    min-height: auto;
-    background: #ffffff;
-  }
-
-  .receipt-container {
-    width: 900px;
-    height: 634px;
-    box-shadow: none;
-    page-break-inside: avoid;
-  }
-
-  .receipt-header {
-    background: linear-gradient(135deg, #2D3192 0%, #1E2270 100%) !important;
-  }
-
-  .header-decoration-left,
-  .header-decoration-right {
-    display: block !important;
-  }
-
-  .letter-n {
-    color: #3D1F5F !important;
-  }
-
-  .company-name-ar,
-  .company-name-sub,
-  .contact-line {
-    color: #ffffff !important;
-  }
-
-  .company-name-en {
-    background: #ffffff !important;
-    color: #2D3192 !important;
-  }
-
-  .action-title,
-  .notice-bar,
-  .timestamp-pill {
-    background: linear-gradient(135deg, #2D3192 0%, #1E2270 100%) !important;
-    color: #ffffff !important;
-  }
-
-  .date-pill,
-  .document-pill,
-  .account-number-box,
-  .account-label-box,
-  .customer-name-box,
-  .customer-label-box,
-  .notice-box,
-  .info-card,
-  .amount-words-box,
-  .statement-box,
-  .code-box,
-  .qr-placeholder,
-  .transfer-details {
-    border: 2px solid #2D3192 !important;
-    background: #ffffff !important;
-  }
-
-  .pill-label {
-    color: #dc2626 !important;
-  }
-
-  .card-label,
-  .account-label,
-  .customer-label-box,
-  .box-label {
-    color: #2563eb !important;
-  }
-
-  .pill-value,
-  .account-value,
-  .card-value,
-  .detail-label,
-  .detail-value {
-    color: #000000 !important;
-  }
-}
-.action-title{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 44px;        
-  padding: 0 50px;      
+/* =========================
+   EXPORT FIXES (ONLY EXPORT)
+   ========================= */
+.receipt-container.is-exporting * {
+  font-family: 'Cairo', sans-serif !important;
+  text-decoration: none !important;
+  letter-spacing: 0 !important;
+  text-rendering: geometricPrecision !important;
 }
 
 .receipt-container.is-exporting .date-pill,
-.receipt-container.is-exporting .document-pill {
-  display: grid !important;
-  grid-auto-flow: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  column-gap: 6px !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-}
-
-.receipt-container.is-exporting .action-title {
-  display: grid !important;
-  place-items: center !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-}
-
+.receipt-container.is-exporting .document-pill,
+.receipt-container.is-exporting .action-title,
 .receipt-container.is-exporting .account-number-box,
 .receipt-container.is-exporting .account-label-box,
 .receipt-container.is-exporting .customer-name-box,
 .receipt-container.is-exporting .customer-label-box,
+.receipt-container.is-exporting .info-card,
 .receipt-container.is-exporting .statement-box,
 .receipt-container.is-exporting .code-box,
-.receipt-container.is-exporting .qr-placeholder {
-  display: grid !important;
-  place-items: center !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
+.receipt-container.is-exporting .notice-bar,
+.receipt-container.is-exporting .timestamp-pill {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .receipt-container.is-exporting .pill-label,
 .receipt-container.is-exporting .pill-value,
 .receipt-container.is-exporting .account-label,
 .receipt-container.is-exporting .account-value,
-.receipt-container.is-exporting .box-label,
 .receipt-container.is-exporting .card-label,
-.receipt-container.is-exporting .card-value {
-  line-height: 1.4 !important;
+.receipt-container.is-exporting .card-value,
+.receipt-container.is-exporting .box-label {
+  line-height: 1 !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.receipt-container.is-exporting .action-title {
+  line-height: 1 !important;
 }
