@@ -28,7 +28,7 @@ const MoneyTransferReceipt: React.FC = () => {
         windowWidth: 900,
         windowHeight: 634,
         foreignObjectRendering: false,
-        letterRendering: true,
+        letterRendering: false,
         onclone: (clonedDoc) => {
           const clonedElement = clonedDoc.querySelector('.receipt-container');
           if (clonedElement) {
