@@ -509,44 +509,28 @@
   white-space: nowrap !important;
 }
 
-/* لو زادت المسافة قليلًا أثناء التصدير */
-.receipt-container.exporting .notice-box { padding: 5px 12px; }
-.receipt-container.exporting .amount-words-box { padding: 5px 12px; }
-.receipt-container.exporting .transfer-details { padding: 7px 12px; }
+/* ✅ إصلاح نهائي لمحاذاة النصوص في التصدير كصورة فقط */
+.receipt-container.exporting span,
+.receipt-container.exporting div {
+  line-height: 1 !important;
+  vertical-align: middle !important;
+}
 
-/* =========================
-   PRINT / PDF FIX
-   ========================= */
-@media print {
-  @page { size: 900px 634px; margin: 0; }
-
-  * {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-    color-adjust: exact !important;
-  }
-
-  html, body {
-    width: 900px !important;
-    height: 634px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    background: #ffffff !important;
-    overflow: hidden !important;
-  }
-
-  .export-button { display: none !important; }
-
-  .receipt-page {
-    padding: 0 !important;
-    min-height: auto !important;
-    background: #ffffff !important;
-  }
-
-  .receipt-container {
-    width: 900px !important;
-    height: 634px !important;
-    box-shadow: none !important;
-    page-break-inside: avoid !important;
-  }
+.receipt-container.exporting .action-title,
+.receipt-container.exporting .pill-label,
+.receipt-container.exporting .pill-value,
+.receipt-container.exporting .account-label,
+.receipt-container.exporting .account-value,
+.receipt-container.exporting .card-label,
+.receipt-container.exporting .card-value,
+.receipt-container.exporting .box-label,
+.receipt-container.exporting .notice-bar,
+.receipt-container.exporting .timestamp-pill,
+.receipt-container.exporting .notice-box,
+.receipt-container.exporting .amount-words-box,
+.receipt-container.exporting .detail-label,
+.receipt-container.exporting .detail-value {
+  transform: translateY(-2px) !important;  /* رفع النص للأعلى قليلاً */
+  display: inline-block !important;
+  line-height: 1.1 !important;
 }
