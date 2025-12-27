@@ -173,4 +173,53 @@ const MoneyTransferReceipt: React.FC = () => {
               <div className="amount-words-box">أربعمائة دولار أزرق لا غير</div>
             </div>
 
-            <div className="statement-c
+            <div className="statement-code-row">
+              <div className="statement-box">
+                <span className="box-label">البيان</span>
+              </div>
+              <div className="code-box">
+                <span className="box-label">الكود</span>
+              </div>
+            </div>
+
+            <div className="bottom-section">
+              <div className="transfer-details">
+                <div className="detail-row">
+                  <span className="detail-label">رقم الحوالة:</span>
+                  <span className="detail-value">1126752892</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">المرسل:</span>
+                  <span className="detail-value">هشام فؤاد سعيد قاسم الراسمي</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">المستلم:</span>
+                  <span className="detail-value">صالح أحمد عبده أحمد عمر</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">الجهة:</span>
+                  <span className="detail-value">شبكة الامتياز</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">هشام فؤاد سعيد قاسم الراسمي/الرقم العام:</span>
+                  <span className="detail-value">1126752892</span>
+                </div>
+              </div>
+
+              <div className="qr-container">
+                <div className="qr-placeholder">QR</div>
+              </div>
+            </div>
+
+            <div className="final-notice-row">
+              <div className="timestamp-pill">12/09/2025 م 08:24:16</div>
+              <div className="notice-bar">هذا الإشعار لا يلزم ختم أو توقيع</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default MoneyTransferReceipt;
