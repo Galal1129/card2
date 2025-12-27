@@ -80,6 +80,8 @@ const MoneyTransferReceipt: React.FC = () => {
               htmlEl.style.display = 'block';
               htmlEl.style.width = '100%';
             });
+const actionTitle = clonedElement.querySelector('.action-title') as HTMLElement | null;
+if (actionTitle) actionTitle.style.transform = 'translateY(-1px)';
 
             const labels = clonedElement.querySelectorAll('.pill-label, .account-label, .card-label, .box-label');
             labels.forEach((label: Element) => {
