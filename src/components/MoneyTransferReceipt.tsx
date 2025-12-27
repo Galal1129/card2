@@ -7,65 +7,74 @@ const MoneyTransferReceipt: React.FC = () => {
   const receiptRef = useRef<HTMLDivElement>(null);
 
   const handleExportAsImage = async () => {
-    const node = receiptRef.current;
-    if (!node) return;
+    if (!receiptRef.current) return;
 
     try {
-      // تأكيد تحميل الخط قبل التصوير
+      // تأكد من تحميل الخط قبل الالتقاط
       await document.fonts.ready;
       await document.fonts.load('400 14px Cairo');
       await document.fonts.load('600 14px Cairo');
       await document.fonts.load('700 20px Cairo');
       await document.fonts.load('800 20px Cairo');
 
-      // Frameين عشان المتصفح يثبت الـ layout فعلاً
-      await new Promise<void>((r) => requestAnimationFrame(() => r()));
-      await new Promise<void>((r) => requestAnimationFrame(() => r()));
+      // قياسات العنصر الحقيقية (بدل الأرقام الثابتة)
+      const el = receiptRef.current;
+      const width = el.offsetWidth;
+      const height = el.offsetHeight;
 
-      const canvas = await html2canvas(node, {
+      const canvas = await html2canvas(el, {
         scale: 3,
         backgroundColor: '#ffffff',
         logging: false,
         useCORS: true,
         allowTaint: true,
-
-        // هذا أهم شيء لحل baseline العربية ومحاذاة النص
-        foreignObjectRendering: true,
-
-        // لا تضع width/height/windowWidth/windowHeight هنا (هي سبب الفراغ/الإزاحة)
-        // ولا تغيّر letterRendering هنا
+        width,
+        height,
+        windowWidth: width,
+        windowHeight: height,
+        scrollX: 0,
+        scrollY: 0,
+        foreignObjectRendering: false,
+        letterRendering: true,
 
         onclone: (clonedDoc) => {
-          // إجبار نفس الخط داخل النسخة المصوّرة
-          const style = clonedDoc.createElement('style');
-          style.innerHTML = `
-            * { 
-              font-family: 'Cairo', sans-serif !important;
-              -webkit-font-smoothing: antialiased !important;
-              text-rendering: geometricPrecision !important;
-            }
-          `;
-          clonedDoc.head.appendChild(style);
+          const cloned = clonedDoc.querySelector('.receipt-container') as HTMLElement | null;
+          if (!cloned) return;
 
-          // مهم: ثبّت العنصر عند (0,0) داخل الـ clone لمنع أي إزاحة
-          const clonedContainer = clonedDoc.querySelector('.receipt-container') as HTMLElement | null;
-          if (clonedContainer) {
-            clonedContainer.style.position = 'fixed';
-            clonedContainer.style.left = '0';
-            clonedContainer.style.top = '0';
-            clonedContainer.style.margin = '0';
-            clonedContainer.style.transform = 'none';
-          }
+          // فعّل وضع التصدير (CSS خاص بالتصدير)
+          cloned.classList.add('is-exporting');
 
-          // إزالة تأثيرات التمركز/الـ padding من الصفحة داخل الـ clone
-          const clonedPage = clonedDoc.querySelector('.receipt-page') as HTMLElement | null;
-          if (clonedPage) {
-            clonedPage.style.padding = '0';
-            clonedPage.style.margin = '0';
-            clonedPage.style.minHeight = 'auto';
-            clonedPage.style.alignItems = 'flex-start';
-            clonedPage.style.justifyContent = 'flex-start';
-          }
+          // ثبّت نفس القياس بالضبط داخل النسخة المستنسخة
+          cloned.style.width = `${width}px`;
+          cloned.style.height = `${height}px`;
+
+          // تجنّب أي تحولات غريبة أو سكرول
+          cloned.style.transform = 'none';
+          cloned.style.left = '0';
+          cloned.style.top = '0';
+
+          // طبّق خط ثابت وتنعيم (بدون أي translate/top)
+          const all = cloned.querySelectorAll('*');
+          all.forEach((node) => {
+            const h = node as HTMLElement;
+            h.style.fontFamily = "'Cairo', sans-serif";
+            h.style.textDecoration = 'none';
+            h.style.webkitFontSmoothing = 'antialiased';
+            h.style.textRendering = 'optimizeLegibility';
+          });
+
+          // RTL للأجزاء العربية المهمة (بدون bidi-override لأنه يسبب مشاكل أثناء الرسم)
+          const rtl = cloned.querySelectorAll(
+            '.company-name-ar-line, .contact-box-title, .action-title, .pill-label, .pill-value,' +
+              ' .account-label, .account-value, .card-label, .card-value, .box-label,' +
+              ' .notice-box, .amount-words-box, .detail-label, .detail-value, .notice-bar'
+          );
+          rtl.forEach((node) => {
+            const h = node as HTMLElement;
+            h.style.direction = 'rtl';
+            h.style.unicodeBidi = 'plaintext';
+            h.style.letterSpacing = '0';
+          });
         },
       });
 
@@ -131,9 +140,7 @@ const MoneyTransferReceipt: React.FC = () => {
             <div className="customer-row">
               <div className="customer-label-box">عميلنا</div>
 
-              <div className="customer-name-box">
-                هشام فؤاد سعيد قاسم الراسمي
-              </div>
+              <div className="customer-name-box">هشام فؤاد سعيد قاسم الراسمي</div>
 
               <div className="account-label-box">
                 <span className="account-label">رقم الحسابي:</span>
@@ -193,18 +200,22 @@ const MoneyTransferReceipt: React.FC = () => {
                   <span className="detail-label">رقم الحوالة:</span>
                   <span className="detail-value">1126752892</span>
                 </div>
+
                 <div className="detail-row">
                   <span className="detail-label">المرسل:</span>
                   <span className="detail-value">هشام فؤاد سعيد قاسم الراسمي</span>
                 </div>
+
                 <div className="detail-row">
                   <span className="detail-label">المستلم:</span>
                   <span className="detail-value">صالح أحمد عبده أحمد عمر</span>
                 </div>
+
                 <div className="detail-row">
                   <span className="detail-label">الجهة:</span>
                   <span className="detail-value">شبكة الامتياز</span>
                 </div>
+
                 <div className="detail-row">
                   <span className="detail-label">هشام فؤاد سعيد قاسم الراسمي/الرقم العام:</span>
                   <span className="detail-value">1126752892</span>
@@ -220,7 +231,6 @@ const MoneyTransferReceipt: React.FC = () => {
               <div className="timestamp-pill">12/09/2025 م 08:24:16</div>
               <div className="notice-bar">هذا الإشعار لا يلزم ختم أو توقيع</div>
             </div>
-
           </div>
         </div>
       </div>
