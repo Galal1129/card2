@@ -7,23 +7,24 @@ const MoneyTransferReceipt: React.FC = () => {
   const receiptRef = useRef<HTMLDivElement>(null);
 
   const handleExportAsImage = async () => {
-    const container = receiptRef.current;
-    if (!container) return;
+    if (!receiptRef.current) return;
 
-    // فعّل وضع التصدير (CSS خاص للتصدير فقط)
-    container.classList.add('is-exporting');
+    const container = receiptRef.current;
 
     try {
-      // تأكد من تحميل الخط قبل التصوير
+      // تأكد من تحميل الخطوط قبل الالتقاط
       await document.fonts.ready;
       await document.fonts.load('400 14px Cairo');
       await document.fonts.load('600 14px Cairo');
       await document.fonts.load('700 20px Cairo');
       await document.fonts.load('800 20px Cairo');
 
-      // اعطِ المتصفح فريمين لتثبيت الـ layout قبل html2canvas
-      await new Promise<void>((r) => requestAnimationFrame(() => r()));
-      await new Promise<void>((r) => requestAnimationFrame(() => r()));
+      // انتظر لحظة لتثبيت الـ layout
+      await new Promise((r) => setTimeout(r, 300));
+
+      // مهم جدًا لمنع القص والالتقاط في الزاوية
+      const sx = window.scrollX;
+      const sy = window.scrollY;
 
       const canvas = await html2canvas(container, {
         scale: 3,
@@ -32,19 +33,23 @@ const MoneyTransferReceipt: React.FC = () => {
         useCORS: true,
         allowTaint: true,
 
-        width: 900,
-        height: 634,
-        windowWidth: 900,
-        windowHeight: 634,
-
-        // هذا أهم تغيير لحل مشكلة نزول النص داخل البوكسات
+        // الأفضل هنا لتثبيت النصوص العربية أثناء التصدير
         foreignObjectRendering: true,
         letterRendering: false,
 
+        // يمنع ظهور الجزء في الزاوية عند وجود scroll
+        scrollX: -sx,
+        scrollY: -sy,
+
         onclone: (clonedDoc) => {
-          // تأكد أن خط Cairo موجود داخل النسخة المستنسخة
-          const hasCairo = clonedDoc.querySelector('link[data-cairo="1"]');
-          if (!hasCairo) {
+          // صفر الهوامش في المستند المستنسخ لتفادي أي إزاحات
+          clonedDoc.documentElement.style.margin = '0';
+          clonedDoc.documentElement.style.padding = '0';
+          clonedDoc.body.style.margin = '0';
+          clonedDoc.body.style.padding = '0';
+
+          // Inject font داخل النسخة المستنسخة (مهم جدًا)
+          if (!clonedDoc.querySelector('link[data-cairo="1"]')) {
             const link = clonedDoc.createElement('link');
             link.setAttribute('data-cairo', '1');
             link.rel = 'stylesheet';
@@ -53,13 +58,16 @@ const MoneyTransferReceipt: React.FC = () => {
             clonedDoc.head.appendChild(link);
           }
 
-          // طبق نفس وضع التصدير على العنصر داخل النسخة المستنسخة
-          const clonedContainer = clonedDoc.querySelector('.receipt-container') as HTMLElement | null;
-          if (clonedContainer) clonedContainer.classList.add('is-exporting');
-
-          // ثبّت الاتجاه والخط داخل النسخة
           clonedDoc.documentElement.dir = 'rtl';
           clonedDoc.body.style.fontFamily = "'Cairo', sans-serif";
+
+          // ضع كلاس export على الـ container لتفعيل CSS خاص بالتصدير فقط
+          const clonedContainer = clonedDoc.querySelector('.receipt-container') as HTMLElement | null;
+          if (clonedContainer) {
+            clonedContainer.classList.add('is-exporting');
+            clonedContainer.style.transform = 'none';
+            (clonedContainer.style as any).zoom = '1';
+          }
         },
       });
 
@@ -71,9 +79,6 @@ const MoneyTransferReceipt: React.FC = () => {
     } catch (error) {
       console.error('Error exporting receipt:', error);
       alert('حدث خطأ أثناء تصدير الإشعار. يرجى المحاولة مرة أخرى.');
-    } finally {
-      // أزل وضع التصدير بعد الانتهاء
-      container.classList.remove('is-exporting');
     }
   };
 
@@ -87,9 +92,9 @@ const MoneyTransferReceipt: React.FC = () => {
       <div className="receipt-container" ref={receiptRef}>
         <div className="receipt-inner-frame">
           <div className="receipt-header">
-            <div className="header-right">
+            <div className="header-left">
               <div className="contact-box">
-                <div className="contact-box-title">Yemen - Sana'a</div>
+                <div className="contact-box-title">اليمن - صنعاء</div>
                 <div className="contact-box-phone">+967 781 444 721</div>
                 <div className="contact-box-phone">+967 730 994 931</div>
               </div>
@@ -97,14 +102,13 @@ const MoneyTransferReceipt: React.FC = () => {
 
             <div className="header-center">
               <div className="company-name-ar-line">الترف</div>
-              <div className="company-name-ar-line"> للتحويلات المالية </div>
-              <div className="company-name-ar-line"></div>
+              <div className="company-name-ar-line">للتحويلات المالية</div>
               <div className="company-name-en">Al-Taraf</div>
             </div>
 
-            <div className="header-left">
+            <div className="header-right">
               <div className="contact-box">
-                <div className="contact-box-title">اليمن - صنعاء</div>
+                <div className="contact-box-title">Yemen - Sana'a</div>
                 <div className="contact-box-phone">+967 781 444 721</div>
                 <div className="contact-box-phone">+967 730 994 931</div>
               </div>
@@ -113,31 +117,31 @@ const MoneyTransferReceipt: React.FC = () => {
 
           <div className="receipt-content">
             <div className="title-row">
-              <div className="date-pill">
-                <span className="pill-label">التاريخ:</span>
-                <span className="pill-value">2025-09-12</span>
-              </div>
-
-              <div className="action-title">إرسال حوالة</div>
-
               <div className="document-pill">
                 <span className="pill-label">رقم المستند:</span>
                 <span className="pill-value">31021</span>
               </div>
+
+              <div className="action-title">إرسال حوالة</div>
+
+              <div className="date-pill">
+                <span className="pill-label">التاريخ:</span>
+                <span className="pill-value">2025-09-12</span>
+              </div>
             </div>
 
             <div className="customer-row">
-              <div className="customer-label-box">عميلنا</div>
-
-              <div className="customer-name-box">هشام فؤاد سعيد قاسم الراسمي</div>
+              <div className="account-number-box">
+                <span className="account-value">1231132</span>
+              </div>
 
               <div className="account-label-box">
                 <span className="account-label">رقم الحسابي:</span>
               </div>
 
-              <div className="account-number-box">
-                <span className="account-value">1231132</span>
-              </div>
+              <div className="customer-name-box">هشام فؤاد سعيد قاسم الراسمي</div>
+
+              <div className="customer-label-box">عميلنا</div>
             </div>
 
             <div className="notice-row">
@@ -172,15 +176,19 @@ const MoneyTransferReceipt: React.FC = () => {
             </div>
 
             <div className="statement-code-row">
-              <div className="statement-box">
-                <span className="box-label">البيان</span>
-              </div>
               <div className="code-box">
                 <span className="box-label">الكود</span>
+              </div>
+              <div className="statement-box">
+                <span className="box-label">البيان</span>
               </div>
             </div>
 
             <div className="bottom-section">
+              <div className="qr-container">
+                <div className="qr-placeholder">QR</div>
+              </div>
+
               <div className="transfer-details">
                 <div className="detail-row">
                   <span className="detail-label">رقم الحوالة:</span>
@@ -203,15 +211,11 @@ const MoneyTransferReceipt: React.FC = () => {
                   <span className="detail-value">1126752892</span>
                 </div>
               </div>
-
-              <div className="qr-container">
-                <div className="qr-placeholder">QR</div>
-              </div>
             </div>
 
             <div className="final-notice-row">
-              <div className="timestamp-pill">12/09/2025 م 08:24:16</div>
               <div className="notice-bar">هذا الإشعار لا يلزم ختم أو توقيع</div>
+              <div className="timestamp-pill">12/09/2025 م 08:24:16</div>
             </div>
           </div>
         </div>
