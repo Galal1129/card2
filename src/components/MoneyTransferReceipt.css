@@ -207,6 +207,7 @@
   line-height: 1;
   margin: 0;
   padding: 0;
+  vertical-align: middle;
 }
 
 .pill-value {
@@ -215,6 +216,7 @@
   line-height: 1;
   margin: 0;
   padding: 0;
+  vertical-align: middle;
 }
 
 .action-title {
@@ -251,6 +253,7 @@
   line-height: 1;
   margin: 0;
   padding: 0;
+  vertical-align: middle;
 }
 
 .account-label-box {
@@ -272,6 +275,7 @@
   line-height: 1;
   margin: 0;
   padding: 0;
+  vertical-align: middle;
 }
 
 .customer-name-box {
@@ -352,6 +356,7 @@
   line-height: 1;
   margin: 0;
   padding: 0;
+  vertical-align: middle;
 }
 
 .card-value {
@@ -362,6 +367,7 @@
   line-height: 1;
   margin: 0;
   padding: 0;
+  vertical-align: middle;
 }
 
 .card-currency {
@@ -424,6 +430,7 @@
   line-height: 1;
   margin: 0;
   padding: 0;
+  vertical-align: middle;
 }
 
 .bottom-section {

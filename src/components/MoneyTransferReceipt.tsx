@@ -27,7 +27,7 @@ const MoneyTransferReceipt: React.FC = () => {
         height: 634,
         windowWidth: 900,
         windowHeight: 634,
-        foreignObjectRendering: false,
+        foreignObjectRendering: true,
         letterRendering: true,
         onclone: (clonedDoc) => {
           const clonedElement = clonedDoc.querySelector('.receipt-container');
@@ -44,6 +44,7 @@ const MoneyTransferReceipt: React.FC = () => {
               htmlEl.style.textRendering = 'optimizeLegibility';
               htmlEl.style.letterSpacing = '0';
               htmlEl.style.fontFeatureSettings = '"liga" 1, "calt" 1';
+              htmlEl.style.verticalAlign = 'middle';
 
               if (computedStyle.fontWeight) {
                 htmlEl.style.fontWeight = computedStyle.fontWeight;
@@ -69,6 +70,7 @@ const MoneyTransferReceipt: React.FC = () => {
               htmlEl.style.whiteSpace = 'normal';
               htmlEl.style.fontKerning = 'normal';
               htmlEl.style.fontFeatureSettings = '"liga" 1, "calt" 1, "curs" 1';
+              htmlEl.style.verticalAlign = 'middle';
             });
 
             const headerArabicElements = clonedElement.querySelectorAll('.company-name-ar-line, .contact-box-title');
@@ -86,21 +88,20 @@ const MoneyTransferReceipt: React.FC = () => {
               htmlLabel.style.borderBottom = 'none';
             });
 
-            const cardElements = clonedElement.querySelectorAll('.info-card');
-            cardElements.forEach((card: Element) => {
-              const htmlCard = card as HTMLElement;
-              htmlCard.style.display = 'flex';
-              htmlCard.style.flexDirection = 'column';
-              htmlCard.style.alignItems = 'center';
-              htmlCard.style.justifyContent = 'center';
+            const containerElements = clonedElement.querySelectorAll(
+              '.info-card, .date-pill, .document-pill, .account-number-box, .account-label-box, .customer-name-box, .customer-label-box, .statement-box, .code-box'
+            );
+            containerElements.forEach((container: Element) => {
+              const htmlContainer = container as HTMLElement;
+              htmlContainer.style.display = 'flex';
+              htmlContainer.style.alignItems = 'center';
+              htmlContainer.style.justifyContent = 'center';
             });
 
-            const textElements = clonedElement.querySelectorAll(
-              '.card-label, .card-value, .pill-label, .pill-value, .account-label, .account-value, .box-label, .customer-label-box, .customer-name-box'
-            );
-            textElements.forEach((el: Element) => {
-              const htmlEl = el as HTMLElement;
-              htmlEl.style.transform = 'translateY(-5px)';
+            const flexColumnElements = clonedElement.querySelectorAll('.info-card');
+            flexColumnElements.forEach((card: Element) => {
+              const htmlCard = card as HTMLElement;
+              htmlCard.style.flexDirection = 'column';
             });
           }
         },
