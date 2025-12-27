@@ -100,6 +100,16 @@ containerElements.forEach((el) => {
   box.style.alignItems = 'center';
   box.style.justifyContent = 'center';
 });
+const nudgeText = clonedElement.querySelectorAll(
+  '.action-title, .pill-label, .pill-value, .account-label, .account-value, .card-label, .card-value, .box-label, .notice-bar, .timestamp-pill'
+);
+
+nudgeText.forEach((el) => {
+  const t = el as HTMLElement;
+  t.style.position = 'relative';
+  t.style.top = '-2px';     // جرّب -1px أو -2px حسب الأفضل
+  t.style.lineHeight = 'normal';
+});
 
             containerElements.forEach((container: Element) => {
               const htmlContainer = container as HTMLElement;
