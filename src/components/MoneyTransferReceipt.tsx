@@ -11,51 +11,60 @@ const MoneyTransferReceipt: React.FC = () => {
     if (!node) return;
 
     try {
-      // انتظر تحميل الخطوط بالكامل (مهم جدًا مع Cairo)
+      // تأكيد تحميل الخط قبل التصوير
       await document.fonts.ready;
-      await Promise.all([
-        document.fonts.load('400 14px Cairo'),
-        document.fonts.load('600 14px Cairo'),
-        document.fonts.load('700 16px Cairo'),
-        document.fonts.load('800 20px Cairo'),
-      ]);
+      await document.fonts.load('400 14px Cairo');
+      await document.fonts.load('600 14px Cairo');
+      await document.fonts.load('700 20px Cairo');
+      await document.fonts.load('800 20px Cairo');
 
-      // تأخير بسيط جدًا لضمان استقرار الرسم قبل التصوير
-      await new Promise((r) => setTimeout(r, 300));
+      // Frameين عشان المتصفح يثبت الـ layout فعلاً
+      await new Promise<void>((r) => requestAnimationFrame(() => r()));
+      await new Promise<void>((r) => requestAnimationFrame(() => r()));
 
       const canvas = await html2canvas(node, {
         scale: 3,
         backgroundColor: '#ffffff',
-        useCORS: true,
-        allowTaint: false,
         logging: false,
+        useCORS: true,
+        allowTaint: true,
 
-        // أهم خيار لحل مشكلة نزول النصوص + دعم العربية بشكل أفضل
+        // هذا أهم شيء لحل baseline العربية ومحاذاة النص
         foreignObjectRendering: true,
 
-        // يمنع مشاكل القص/الإزاحة لو الصفحة فيها سكرول
-        scrollX: -window.scrollX,
-        scrollY: -window.scrollY,
+        // لا تضع width/height/windowWidth/windowHeight هنا (هي سبب الفراغ/الإزاحة)
+        // ولا تغيّر letterRendering هنا
 
         onclone: (clonedDoc) => {
-          // نظّف الصفحة المنسوخة حتى لا تؤثر محاذاة الصفحة الأصلية
-          clonedDoc.documentElement.style.background = '#ffffff';
-          clonedDoc.body.style.margin = '0';
-          clonedDoc.body.style.padding = '0';
-
-          // ثبت الخط داخل النسخة (احتياط)
+          // إجبار نفس الخط داخل النسخة المصوّرة
           const style = clonedDoc.createElement('style');
           style.innerHTML = `
-            * { font-family: 'Cairo', sans-serif !important; }
-            body { background: #ffffff !important; }
+            * { 
+              font-family: 'Cairo', sans-serif !important;
+              -webkit-font-smoothing: antialiased !important;
+              text-rendering: geometricPrecision !important;
+            }
           `;
           clonedDoc.head.appendChild(style);
 
-          // اجعل عنصر الإيصال بدون أي إزاحة
+          // مهم: ثبّت العنصر عند (0,0) داخل الـ clone لمنع أي إزاحة
           const clonedContainer = clonedDoc.querySelector('.receipt-container') as HTMLElement | null;
           if (clonedContainer) {
+            clonedContainer.style.position = 'fixed';
+            clonedContainer.style.left = '0';
+            clonedContainer.style.top = '0';
             clonedContainer.style.margin = '0';
             clonedContainer.style.transform = 'none';
+          }
+
+          // إزالة تأثيرات التمركز/الـ padding من الصفحة داخل الـ clone
+          const clonedPage = clonedDoc.querySelector('.receipt-page') as HTMLElement | null;
+          if (clonedPage) {
+            clonedPage.style.padding = '0';
+            clonedPage.style.margin = '0';
+            clonedPage.style.minHeight = 'auto';
+            clonedPage.style.alignItems = 'flex-start';
+            clonedPage.style.justifyContent = 'flex-start';
           }
         },
       });
@@ -73,11 +82,7 @@ const MoneyTransferReceipt: React.FC = () => {
 
   return (
     <div className="receipt-page">
-      <button
-        onClick={handleExportAsImage}
-        className="export-button"
-        title="تصدير كصورة"
-      >
+      <button onClick={handleExportAsImage} className="export-button" title="تصدير كصورة">
         <Download size={20} />
         <span>تصدير كصورة</span>
       </button>
@@ -95,7 +100,7 @@ const MoneyTransferReceipt: React.FC = () => {
 
             <div className="header-center">
               <div className="company-name-ar-line">الترف</div>
-              <div className="company-name-ar-line"> للتحويلات المالية </div>
+              <div className="company-name-ar-line">للتحويلات المالية</div>
               <div className="company-name-en">Al-Taraf</div>
             </div>
 
@@ -150,16 +155,19 @@ const MoneyTransferReceipt: React.FC = () => {
                 <div className="card-label">مبلغ الحساب</div>
                 <div className="card-value">400</div>
               </div>
+
               <div className="info-card">
                 <div className="card-label">عملة الحساب</div>
                 <div className="card-value">دولار أزرق</div>
               </div>
+
               <div className="info-card">
                 <div className="card-label">العمولة</div>
                 <div className="card-value">
                   400 <span className="card-currency">ريال يمني</span>
                 </div>
               </div>
+
               <div className="info-card">
                 <div className="card-label">الإجمالي</div>
                 <div className="card-value">400</div>
@@ -212,6 +220,7 @@ const MoneyTransferReceipt: React.FC = () => {
               <div className="timestamp-pill">12/09/2025 م 08:24:16</div>
               <div className="notice-bar">هذا الإشعار لا يلزم ختم أو توقيع</div>
             </div>
+
           </div>
         </div>
       </div>
