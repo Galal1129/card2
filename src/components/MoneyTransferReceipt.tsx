@@ -100,7 +100,7 @@ const MoneyTransferReceipt: React.FC = () => {
             );
             textElements.forEach((el: Element) => {
               const htmlEl = el as HTMLElement;
-              htmlEl.style.transform = 'translateY(-2px)';
+              htmlEl.style.transform = 'translateY(-5px)';
             });
           }
         },
