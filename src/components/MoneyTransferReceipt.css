@@ -596,9 +596,41 @@
     print-color-adjust: exact !important;
   }
 
-  /* حجم الصفحة */
+  /* التأكد من عدم تقسيم المحتوى */
+  .receipt-container,
+  .receipt-inner-frame,
+  .receipt-header,
+  .receipt-content {
+    page-break-inside: avoid !important;
+    page-break-before: avoid !important;
+    page-break-after: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* منع الأرامل واليتامى */
+  .receipt-container * {
+    orphans: 3 !important;
+    widows: 3 !important;
+  }
+
+  /* ضبط حجم الإيصال للطباعة */
+  .receipt-container {
+    max-width: 900px !important;
+    max-height: 634px !important;
+    width: 900px !important;
+    height: 634px !important;
+    transform: translate(-50%, -50%) scale(0.95) !important;
+  }
+
+  /* حجم الصفحة مع هوامش أقل */
   @page {
     size: A4 landscape;
-    margin: 10mm;
+    margin: 5mm;
+  }
+
+  /* إجبار المحتوى على صفحة واحدة */
+  html, body {
+    height: 100% !important;
+    overflow: hidden !important;
   }
 }
