@@ -1,95 +1,10 @@
-import React, { useRef } from 'react';
-import { Download } from 'lucide-react';
-import html2canvas from 'html2canvas';
+import React from 'react';
 import './MoneyTransferReceipt.css';
 
 const MoneyTransferReceipt: React.FC = () => {
-  const receiptRef = useRef<HTMLDivElement>(null);
-
-  const handleExportAsImage = async () => {
-    if (!receiptRef.current) return;
-
-    const node = receiptRef.current;
-
-    try {
-      // 1) فعّل وضع التصدير (يمنع wrapping ويقلل gaps) قبل التصوير
-      node.classList.add('exporting');
-
-      // 2) انتظر تحميل الخطوط + انتظار رسمين (layout) لضمان القياسات
-      await document.fonts.ready;
-      await document.fonts.load('700 20px Cairo');
-      await document.fonts.load('800 20px Cairo');
-      await document.fonts.load('600 14px Cairo');
-
-      await new Promise<void>((r) => requestAnimationFrame(() => requestAnimationFrame(() => r())));
-
-      // 3) التصوير
-      const canvas = await html2canvas(node, {
-        scale: 3,
-        backgroundColor: '#ffffff',
-        logging: false,
-        useCORS: true,
-        allowTaint: true,
-        width: node.offsetWidth,
-        height: node.offsetHeight,
-        windowWidth: node.offsetWidth,
-        windowHeight: node.offsetHeight,
-        foreignObjectRendering: false,
-        letterRendering: false,
-        onclone: (clonedDoc) => {
-          const clonedContainer = clonedDoc.querySelector('.receipt-container') as HTMLElement | null;
-          if (!clonedContainer) return;
-
-          // فعّل Export Mode داخل النسخة المستنسخة أيضًا
-          clonedContainer.classList.add('exporting');
-clonedContainer.querySelectorAll('*').forEach((el) => {
-  const h = el as HTMLElement;
-  h.style.webkitFontSmoothing = 'antialiased';
-  h.style.textRendering = 'geometricPrecision';
-});
-
-          // تثبيت المقاس (يمنع أي اختلافات في الطباعة داخل clone)
-          clonedContainer.style.width = '900px';
-          clonedContainer.style.height = '634px';
-
-          // منع أي التفاف في الهيدر داخل التصدير
-          clonedDoc
-            .querySelectorAll(
-              '.contact-box-title, .contact-box-phone, .company-name-ar-line, .company-name-en, .pill-label, .pill-value'
-            )
-            .forEach((el) => {
-              (el as HTMLElement).style.whiteSpace = 'nowrap';
-            });
-
-          // اتجاه العربية مضبوط (أفضل من bidi-override لأنه قد يكسر قياسات بعض العناصر)
-          clonedContainer.style.direction = 'rtl';
-          clonedContainer.style.unicodeBidi = 'plaintext';
-        },
-      });
-
-      // 4) تنزيل الصورة
-      const image = canvas.toDataURL('image/png', 1.0);
-      const link = document.createElement('a');
-      link.href = image;
-      link.download = 'receipt-31021.png';
-      link.click();
-    } catch (error) {
-      console.error('Error exporting receipt:', error);
-      alert('حدث خطأ أثناء تصدير الإشعار. يرجى المحاولة مرة أخرى.');
-    } finally {
-      // مهم جدًا: أعد الوضع الطبيعي بعد التصدير
-      node.classList.remove('exporting');
-    }
-  };
-
   return (
     <div className="receipt-page">
-      <button onClick={handleExportAsImage} className="export-button" title="تصدير كصورة">
-        <Download size={20} />
-        <span>تصدير كصورة</span>
-      </button>
-
-      <div className="receipt-container" ref={receiptRef}>
+      <div className="receipt-container">
         <div className="receipt-inner-frame">
           <div className="receipt-header">
             <div className="header-right">

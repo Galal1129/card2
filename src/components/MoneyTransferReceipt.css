@@ -20,23 +20,6 @@
   gap: 20px;
 }
 
-.export-button {
-  background: linear-gradient(135deg, #2D3192 0%, #1E2270 100%);
-  color: #ffffff;
-  border: none;
-  border-radius: 16px;
-  padding: 12px 32px;
-  font-size: 16px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(45, 49, 146, 0.3);
-  transition: all 0.3s ease;
-}
-.export-button:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(45, 49, 146, 0.4); }
-.export-button:active { transform: translateY(0); box-shadow: 0 2px 8px rgba(45, 49, 146, 0.3); }
 
 .receipt-container {
   width: 900px;
@@ -533,4 +516,89 @@
   transform: translateY(-2px) !important;  /* رفع النص للأعلى قليلاً */
   display: inline-block !important;
   line-height: 1.1 !important;
+}
+
+/* =========================
+   PRINT STYLES (للطباعة)
+   ========================= */
+@media print {
+  /* إجبار المتصفح على طباعة الخلفيات والألوان */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* إخفاء كل شيء عدا الإيصال */
+  body * {
+    visibility: hidden;
+  }
+
+  .receipt-container,
+  .receipt-container * {
+    visibility: visible;
+  }
+
+  /* جعل الإيصال يطبع بدون هوامش */
+  .receipt-page {
+    padding: 0;
+    margin: 0;
+    background: #ffffff;
+  }
+
+  .receipt-container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: none;
+    page-break-inside: avoid;
+  }
+
+  /* التأكد من طباعة جميع الخلفيات الملونة */
+  .receipt-header,
+  .action-title,
+  .notice-bar,
+  .timestamp-pill {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background: linear-gradient(135deg, #2D3192 0%, #1E2270 100%) !important;
+  }
+
+  /* التأكد من طباعة جميع الحدود */
+  .receipt-container,
+  .receipt-inner-frame,
+  .date-pill,
+  .document-pill,
+  .account-number-box,
+  .account-label-box,
+  .customer-name-box,
+  .customer-label-box,
+  .notice-box,
+  .info-card,
+  .amount-words-box,
+  .statement-box,
+  .code-box,
+  .qr-placeholder,
+  .transfer-details {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* التأكد من طباعة جميع الألوان */
+  .pill-label,
+  .account-label,
+  .card-label,
+  .box-label,
+  .customer-label-box {
+    color: #2563eb !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* حجم الصفحة */
+  @page {
+    size: A4 landscape;
+    margin: 10mm;
+  }
 }
